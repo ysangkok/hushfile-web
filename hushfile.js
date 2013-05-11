@@ -333,39 +333,39 @@ if(window.location.pathname == "/") {
 	
 	// create download page content
 	content = '<h1>hushfile.it - download file</h1>\n';
-	content = '<div id="metadata" style="display: none;">\n';
+	content += '<div id="metadata" style="display: none;">\n';
 
 	// create metadata div 
-	content = '<div class="alert alert-success">\n';
-	content = '<p>Password accepted, metadata below. Click button to get and decrypt file.</p>\n';
-	content = '</div>\n';
+	content += '<div class="alert alert-success">\n';
+	content += '<p>Password accepted, metadata below. Click button to get and decrypt file.</p>\n';
+	content += '</div>\n';
 	
 	// table with metadata
-	content = '<table class="table table-condensed">\n';
-	content = '<tr><td>Filename</td><td id="filename">&nbsp;</td></tr>\n';
-	content = '<tr><td>Mime type</td><td id="mimetype">&nbsp;</td></tr>\n';
-	content = '<tr><td>File size</td><td id="filesize">&nbsp;</td></tr>\n';
-	content = '<tr><td>Uploader IP</td><td id="clientip">&nbsp;</td></tr>\n';
-	content = '</table>\n';
-	content = '<button class="btn btn-large btn-primary btn-success" id="download" type="button" onclick="download();"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>\n';
-	content = '<a href="" class="btn btn-large btn-primary btn-danger" id="delete"><i class="icon-trash icon-large"></i> Delete file</a>\n';
-	content = '</div>\n';
+	content += '<table class="table table-condensed">\n';
+	content += '<tr><td>Filename</td><td id="filename">&nbsp;</td></tr>\n';
+	content += '<tr><td>Mime type</td><td id="mimetype">&nbsp;</td></tr>\n';
+	content += '<tr><td>File size</td><td id="filesize">&nbsp;</td></tr>\n';
+	content += '<tr><td>Uploader IP</td><td id="clientip">&nbsp;</td></tr>\n';
+	content += '</table>\n';
+	content += '<button class="btn btn-large btn-primary btn-success" id="download" type="button" onclick="download();"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>\n';
+	content += '<a href="" class="btn btn-large btn-primary btn-danger" id="delete"><i class="icon-trash icon-large"></i> Delete file</a>\n';
+	content += '</div>\n';
 
 	// create downloading progress div
-	content = '<div id="downloading" style="display: none;">\n';
-	content = '<p><i id="downloadingdone" class="icon-spinner icon-spin"></i> <b>Downloading...</b></p>\n';
-	content = '<div class="progress progress-striped" id="download_progress_bar" style="width: 20em;">\n';
-	content = '<div class="downloadpercent bar bar-success">0%</div>\n';
-	content = '</div>\n';
-	content = '</div>\n';
+	content += '<div id="downloading" style="display: none;">\n';
+	content += '<p><i id="downloadingdone" class="icon-spinner icon-spin"></i> <b>Downloading...</b></p>\n';
+	content += '<div class="progress progress-striped" id="download_progress_bar" style="width: 20em;">\n';
+	content += '<div class="downloadpercent bar bar-success">0%</div>\n';
+	content += '</div>\n';
+	content += '</div>\n';
 
 	// create decrypting div
-	content = '<div id="decrypting" style="display: none;">\n';
-	content = '<p><i id="decryptingdone" class="icon-spinner icon-spin"></i> <b>Decrypting...</b></p>\n';
-	content = '</div>\n';
+	content += '<div id="decrypting" style="display: none;">\n';
+	content += '<p><i id="decryptingdone" class="icon-spinner icon-spin"></i> <b>Decrypting...</b></p>\n';
+	content += '</div>\n';
 
 	// create user download div
-	content = '<div id="downloaddiv" style="display: none;"></div>\n';
+	content += '<div id="downloaddiv" style="display: none;"></div>\n';
 	
 	setContent(content);
 	
