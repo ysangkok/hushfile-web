@@ -32,9 +32,9 @@ function handleFileSelect(evt) {
 	// Reset load_progress indicator on new file selection.
 	load_progress.style.width = '0%';
 	load_progress.textContent = '0%';
-	document.getElementById('read_progress_div').style.visibility="visible";
-	document.getElementById('encrypting').style.visibility="hidden";
-	document.getElementById('uploading').style.visibility="hidden";
+	document.getElementById('read_progress_div').style.display="block";
+	document.getElementById('encrypting').style.display="block";
+	document.getElementById('uploading').style.display="block";
 	
 	//create filereader object
 	reader = new FileReader();
@@ -51,7 +51,7 @@ function handleFileSelect(evt) {
 		document.getElementById('read_progress_div').style.color='green';
 		
 		//make the next section visible
-		document.getElementById('encrypting').style.visibility="visible";
+		document.getElementById('encrypting').style.display="block";
 		document.getElementById('encryptingdone').className="icon-spinner icon-spin";
 		setTimeout('encrypt()',1000);
 	};
@@ -92,7 +92,7 @@ function encrypt() {
 	document.getElementById('encrypting').style.color='green';
 
 	//make the next section visible
-	document.getElementById('uploading').style.visibility="visible";
+	document.getElementById('uploading').style.display="block";
 	document.getElementById('uploaddone').className="icon-spinner icon-spin";
 
 	setTimeout('upload(cryptoobject,metadataobject,deletepassword)',1000);
@@ -111,7 +111,7 @@ function upload(cryptoobject,metadataobject,deletepassword) {
 			if (responseobject.status=='ok') {
 				document.getElementById('uploaddone').className= "icon-check";
 				document.getElementById('uploading').style.color='green';
-				document.getElementById('response').style.visibility="visible";
+				document.getElementById('response').style.display="block";
 				//get current URL
 				url = window.location.protocol + '://' + window.location.host + '/';
 				document.getElementById('response').innerHTML = '<p><i class="icon-check"></i> <b><span style="color: green;">Success! Your URL is:</span></b><br> <a class="btn btn-success" href="/'+responseobject.fileid+'#'+document.getElementById('password').value+'">'+url+responseobject.fileid+'#'+document.getElementById('password').value+'</a>';
@@ -146,7 +146,7 @@ function download() {
 	// hide the download button
 	document.getElementById('download').className="btn btn-large btn-primary btn-success disabled";
 	// make download progress bar div visible
-	document.getElementById('downloading').style.visibility="visible";
+	document.getElementById('downloading').style.display="block";
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/api/file?fileid='+fileid, true);
 	xhr.onload = function(e) {
@@ -156,7 +156,7 @@ function download() {
 			document.getElementById('downloadingdone').className="icon-check";
 
 			//make the decrypting div visible
-			document.getElementById('decrypting').style.visibility="visible";
+			document.getElementById('decrypting').style.display="block";
 
 			// decrypt the data
 			decryptedwords = CryptoJS.AES.decrypt(this.response, password);
@@ -180,7 +180,7 @@ function download() {
 			document.getElementById('downloaddiv').appendChild(a);
 			
 			//make div visible
-			document.getElementById('downloaddiv').style.visibility="visible";
+			document.getElementById('downloaddiv').style.display="block";
 		} else {
 			alert("An error was encountered downloading filedata.");
 		};
@@ -255,7 +255,7 @@ if(window.location.pathname == "/") {
 	content += '</div>\n';
 	
 	// create uploading div
-	content += '<div id="uploading" style="visibility: hidden;">\n';
+	content += '<div id="uploading" style="display: none;">\n';
 	content += '<p><i id="uploaddone" class="icon-check-empty"></i> <b>Uploading...</b>\n';
 	content += '<div class="progress progress-striped" id="upload_progress_bar" style="width: 20em;">\n';
 	content += '<div class="uploadpercent bar bar-success">0%</div>\n';
@@ -320,6 +320,7 @@ if(window.location.pathname == "/") {
 	content += '<h4>Background</h4>\n';
 	content += 'The idea for hushfile came from the pastebin <a href="https://ezcrypt.it/">ezcrypt.it</a>. Ezcrypt.it is like a normal pastebin, except that it encrypts the pasted text before it is uploaded to the server. Hushfile is a file-version of ezcrypt.it, an easy way to share files with those you wish to share with, and noone else. This might seem like a subtle difference from a normal pastebin or filesharing service, but it is a <b>great</b> idea. I firmly believe that the best way to promote privacy online is to put <b>easy to use encryption</b> into the hands of the end users. People are lazy, but if a private alternative is as easy to use as a non-private one, the choice is easy.\n';
 	content += '</div>\n';
+	setContent(content);
 } else {
 	// this is not a request for a known url, get fileid and password
 	var fileid = window.location.pathname.substr(1);
@@ -332,7 +333,7 @@ if(window.location.pathname == "/") {
 	
 	// create download page content
 	content = '<h1>hushfile.it - download file</h1>\n';
-	content = '<div id="metadata" style="visibility: hidden;">\n';
+	content = '<div id="metadata" style="display: none;">\n';
 
 	// create metadata div 
 	content = '<div class="alert alert-success">\n';
@@ -351,7 +352,7 @@ if(window.location.pathname == "/") {
 	content = '</div>\n';
 
 	// create downloading progress div
-	content = '<div id="downloading" style="visibility: hidden;">\n';
+	content = '<div id="downloading" style="display: none;">\n';
 	content = '<p><i id="downloadingdone" class="icon-spinner icon-spin"></i> <b>Downloading...</b></p>\n';
 	content = '<div class="progress progress-striped" id="download_progress_bar" style="width: 20em;">\n';
 	content = '<div class="downloadpercent bar bar-success">0%</div>\n';
@@ -359,12 +360,12 @@ if(window.location.pathname == "/") {
 	content = '</div>\n';
 
 	// create decrypting div
-	content = '<div id="decrypting" style="visibility: hidden;">\n';
+	content = '<div id="decrypting" style="display: none;">\n';
 	content = '<p><i id="decryptingdone" class="icon-spinner icon-spin"></i> <b>Decrypting...</b></p>\n';
 	content = '</div>\n';
 
 	// create user download div
-	content = '<div id="downloaddiv" style="visibility: hidden;"></div>\n';
+	content = '<div id="downloaddiv" style="display: none;"></div>\n';
 	
 	var download_progress = document.querySelector('.downloadpercent');
 	
@@ -391,7 +392,7 @@ if(window.location.pathname == "/") {
 						if(metadata != 'undefined') {
 							try {
 								var jsonmetadata = JSON.parse(metadata);
-								document.getElementById('metadata').style.visibility="visible";
+								document.getElementById('metadata').style.display="block";
 								document.getElementById('filename').innerHTML = jsonmetadata.filename;
 								document.getElementById('mimetype').innerHTML = jsonmetadata.mimetype;
 								document.getElementById('filesize').innerHTML = jsonmetadata.filesize;
