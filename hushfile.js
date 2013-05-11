@@ -425,7 +425,8 @@ if(window.location.pathname == "/") {
 	ipxhr.open('GET', '/api/ip?fileid='+fileid, true);
 	ipxhr.onload = function(e) {
 		if (this.status == 200) {
-			document.getElementById('clientip').innerHTML = this.response;
+			var jsonip = JSON.parse(metadata);
+			document.getElementById('clientip').innerHTML = jsonip.uploadip;
 		} else {
 			alert("An error was encountered downloading metadata.");
 		};
