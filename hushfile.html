@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>hushfile.it</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/bootstrap-fileupload.min.css" rel="stylesheet" media="screen">
+        <link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
+        <link href="css/progressbar.css" rel="stylesheet" media="screen">
+    </head>
+    
+    <body style="padding-top: 80px;">
+        <div class="row-fluid">
+            <div class="span12">
+                <div id="navbartop" class="navbar navbar-fixed-top">
+                    <div class="navbar-inner">
+                        <a class="brand offset2" href="/">hushfile.it</a>
+                        <ul class="nav">
+                        <li id="upload"><a href="/" onclick>Upload</a></li>
+                        <li class="divider-vertical"></li>
+                        <li id="about"><a href="/about">About</a></li>
+                        <li class="divider-vertical"></li>
+                        <li id="faq"><a href="/faq">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row-fluid">
+                    <div id="content" class="span8 offset2">
+                        <!-- main page content goes here -->
+                    </div>
+                </div>
+                
+                <div id="navbarbottom" class="navbar navbar-fixed-bottom" style="text-align: center;">
+                    <div class="navbar-inner">
+                        Did you find this useful ? Bitcoin donations to 
+                        <a href="bitcoin:1LjcmBXuBo5CZqBL1wyCGecmqhT9WMv5QF">1LjcmBXuBo5CZqBL1wyCGecmqhT9WMv5QF</a> 
+                        appreciated.<br>Code on <a href="https://github.com/tykling/hushfile" target="_blank">Github</a>. 
+                        &copy; 2013 Thomas Steen Rasmussen / Tykling - 
+                        <a href="mailto:operator@hushfile.it">e-mail operator</a> - 
+                        <a href="mailto:hushfile@hushfile.it">e-mail author</a> - 
+                        <a href="https://github.com/tykling/hushfile/issues/">report issue</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>
+        $(document).ready(function() {
+            // activate dismiss/close function of any bootstrap alert boxes
+            $(".alert").alert();
+        });
+        </script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="https://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+        <script src="js/cryptojs-uint8.js"></script>
+        <script src="hushfile.js"></script>
+    </body>
+</html>
