@@ -147,6 +147,7 @@ function deletefile() {
 	document.getElementById('deleting').style.display="block";
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/api/delete?fileid='+fileid+'&deletepassword='+document.getElementById('deletepassword').innerHTML, true);
+
 	xhr.onload = function(e) {
 		document.getElementById('deleteresponse').style.display="block";
 		if (this.status == 200) {
@@ -160,12 +161,14 @@ function deletefile() {
 				//unable to delete file
 				document.getElementById('deletingdone').className="icon-warning-sign";
 				document.getElementById('deleteresponse').innerHTML="<div class='alert alert-error'>Unable to delete file</div>\n";
-			}
+			};
 		} else if (this.status == 401) {
 			document.getElementById('deletingdone').className="icon-warning-sign";
 			document.getElementById('deleteresponse').innerHTML="<div class='alert alert-error'>Incorrect deletepassword</div>\n";
-		}
-	}
+		};
+	};
+	
+	xhr.send();
 }
 
 //function that downloads the file to the browser,
