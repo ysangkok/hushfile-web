@@ -140,10 +140,38 @@ function upload(cryptoobject,metadataobject,deletepassword) {
 
 var download_progress = document.querySelector('.downloadpercent');
 
+//function that deletes the file
+function delete() {
+	// disable the delete button
+	document.getElementById('delete').className="btn btn-large btn-primary btn-success disabled";
+	document.getElementById('deleting').style.display="block";
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', '/api/delete?fileid='+fileid+'&deletepassword='+document.getElementById('deletepassword').innerHTML, true);
+	xhr.onload = function(e) {
+		document.getElementById('deleteresponse').style.display="block";
+		if (this.status == 200) {
+			//parse response json
+			var responseobject = JSON.parse(xhr.responseText);
+			if(responseobject.deleted) {
+				//file deleted OK
+				document.getElementById('deletingdone').className="icon-check";
+				document.getElementById('deleteresponse').innerHTML="<div class='alert alert-success'>File deleted successfully</div>\n";
+			} else {
+				//unable to delete file
+				document.getElementById('deletingdone').className="icon-warning-sign";
+				document.getElementById('deleteresponse').innerHTML="<div class='alert alert-error'>Unable to delete file</div>\n";
+			}
+		} else if (this.status == 401) {
+			document.getElementById('deletingdone').className="icon-warning-sign";
+			document.getElementById('deleteresponse').innerHTML="<div class='alert alert-error'>Incorrect deletepassword</div>\n";
+		}
+	}
+}
+
 //function that downloads the file to the browser,
 //and decrypts and creates download button
 function download() {
-	// hide the download button
+	// disable the download button
 	document.getElementById('download').className="btn btn-large btn-primary btn-success disabled";
 	// make download progress bar div visible
 	document.getElementById('downloading').style.display="block";
@@ -346,9 +374,10 @@ if(window.location.pathname == "/") {
 	content += '<tr><td>Mime type</td><td id="mimetype">&nbsp;</td></tr>\n';
 	content += '<tr><td>File size</td><td id="filesize">&nbsp;</td></tr>\n';
 	content += '<tr><td>Uploader IP</td><td id="clientip">&nbsp;</td></tr>\n';
+	content += '<tr style="display:none"><td>Deletepassword</td><td id="deletepassword">&nbsp;</td></tr>\n';
 	content += '</table>\n';
 	content += '<button class="btn btn-large btn-primary btn-success" id="download" type="button" onclick="download();"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>\n';
-	content += '<a href="" class="btn btn-large btn-primary btn-danger" id="delete"><i class="icon-trash icon-large"></i> Delete file</a>\n';
+	content += '<button class="btn btn-large btn-primary btn-danger" id="delete" type="button" onclick="delete();"><i class="icon-trash icon-large"></i> Delete file</button>\n';
 	content += '</div>\n';
 
 	// create downloading progress div
@@ -366,6 +395,15 @@ if(window.location.pathname == "/") {
 
 	// create user download div
 	content += '<div id="downloaddiv" style="display: none;"></div>\n';
+	
+	// create deleting div
+	content += '<div id="deleting" style="display: none;">\n';
+	content += '<p><i id="deletingdone" class="icon-spinner icon-spin"></i> <b>Deleting...</b></p>\n';
+	content += '</div>\n';
+	
+	// create deleteresponse div
+	content += '<div id="deleteresponse" style="display: none;">\n';
+	content += '</div>\n';
 	
 	setContent(content);
 	
@@ -398,7 +436,7 @@ if(window.location.pathname == "/") {
 								document.getElementById('filename').innerHTML = jsonmetadata.filename;
 								document.getElementById('mimetype').innerHTML = jsonmetadata.mimetype;
 								document.getElementById('filesize').innerHTML = jsonmetadata.filesize;
-								document.getElementById('delete').href = "/api/delete?fileid=" + fileid + "&deletepassword=" + jsonmetadata.deletepassword;
+								document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
 							} catch(err) {
 								alert("An error was encountered parsing metadata: " + err);
 							};
