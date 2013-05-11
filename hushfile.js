@@ -449,12 +449,23 @@ if(window.location.pathname == "/") {
 			} else {
 				// fileid does not exist
 				setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n');
+				
+				// highligt no menu items
+				document.getElementById("upload").className="";
+				document.getElementById("about").className="";
+				document.getElementById("faq").className="";
 			};
 		} else if (this.status == 404) {
 			//fileid does not exist
 			setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n');
+			
+			// highligt no menu items
+			document.getElementById("upload").className="";
+			document.getElementById("about").className="";
+			document.getElementById("faq").className="";
 		};
 	};
+	
 	// send /exists request
 	xhr.send();
 	
