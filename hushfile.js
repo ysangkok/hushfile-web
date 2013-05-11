@@ -141,7 +141,7 @@ function upload(cryptoobject,metadataobject,deletepassword) {
 var download_progress = document.querySelector('.downloadpercent');
 
 //function that deletes the file
-function delete() {
+function deletefile() {
 	// disable the delete button
 	document.getElementById('delete').className="btn btn-large btn-primary btn-success disabled";
 	document.getElementById('deleting').style.display="block";
@@ -377,7 +377,7 @@ if(window.location.pathname == "/") {
 	content += '<tr style="display:none"><td>Deletepassword</td><td id="deletepassword">&nbsp;</td></tr>\n';
 	content += '</table>\n';
 	content += '<button class="btn btn-large btn-primary btn-success" id="download" type="button" onclick="download();"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>\n';
-	content += '<button class="btn btn-large btn-primary btn-danger" id="delete" type="button" onclick="delete();"><i class="icon-trash icon-large"></i> Delete file</button>\n';
+	content += '<button class="btn btn-large btn-primary btn-danger" id="delete" type="button" onclick="deletefile();"><i class="icon-trash icon-large"></i> Delete file</button>\n';
 	content += '</div>\n';
 
 	// create downloading progress div
