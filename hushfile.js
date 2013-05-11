@@ -367,6 +367,8 @@ if(window.location.pathname == "/") {
 	// create user download div
 	content = '<div id="downloaddiv" style="display: none;"></div>\n';
 	
+	setContent(content);
+	
 	var download_progress = document.querySelector('.downloadpercent');
 	
 	// check if it is a file id that exists
