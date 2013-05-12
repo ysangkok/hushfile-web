@@ -407,7 +407,6 @@ if(window.location.pathname == "/") {
 	content += '</div>\n';
 	
 	// check if it is a file id that exists
-	var fileexists = false;
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/api/exists?fileid='+fileid, true);
 	xhr.onload = function(e) {
@@ -415,7 +414,6 @@ if(window.location.pathname == "/") {
 			var responseobject = JSON.parse(xhr.responseText);
 			if (responseobject.exists) {
 				// fileid exists
-				fileexists = true;
 				
 				// create page content
 				setContent(content);
@@ -460,6 +458,20 @@ if(window.location.pathname == "/") {
 					};
 				};
 				xhr2.send();
+				
+				// create XHR to get IP
+				var ipxhr = new XMLHttpRequest();
+				ipxhr.open('GET', '/api/ip?fileid='+fileid, true);
+				ipxhr.onload = function(e) {
+					if (this.status == 200) {
+						var jsonip = JSON.parse(ipxhr.responseText);
+						document.getElementById('clientip').innerHTML = jsonip.uploadip;
+					} else {
+						alert("An error was encountered getting uploader ip.");
+					};
+				};
+				// get IP
+				ipxhr.send();
 			} else {
 				// fileid does not exist
 				setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n');
@@ -484,20 +496,4 @@ if(window.location.pathname == "/") {
 	
 	// send /exists request
 	xhr.send();
-	
-	if(fileexists) {
-		// create XHR to get IP
-		var ipxhr = new XMLHttpRequest();
-		ipxhr.open('GET', '/api/ip?fileid='+fileid, true);
-		ipxhr.onload = function(e) {
-			if (this.status == 200) {
-				var jsonip = JSON.parse(ipxhr.responseText);
-				document.getElementById('clientip').innerHTML = jsonip.uploadip;
-			} else {
-				alert("An error was encountered getting uploader ip.");
-			};
-		};
-		// get IP
-		ipxhr.send();
-	};
 };
