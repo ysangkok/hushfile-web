@@ -219,8 +219,8 @@ function download() {
 	xhr.onprogress = function(e) {
 		if (e.lengthComputable) {
 			temp = Math.round((e.loaded / e.total) * 100);
-			document.getElementById('download_progress_bar').style.width = temp + '%';
-			document.getElementById('download_progress_bar').textContent = temp + '%';
+			document.getElementById('download_progress_bar_percent').style.width = temp + '%';
+			document.getElementById('download_progress_bar_percent').textContent = temp + '%';
 		};
 	};
 
@@ -385,7 +385,7 @@ if(window.location.pathname == "/") {
 	content += '<div id="downloading" style="display: none;">\n';
 	content += '<p><i id="downloadingdone" class="icon-spinner icon-spin"></i> <b>Downloading...</b></p>\n';
 	content += '<div class="progress progress-striped" id="download_progress_bar" style="width: 20em;">\n';
-	content += '<div class="downloadpercent bar bar-success">0%</div>\n';
+	content += '<div id="download_progress_bar_percent" class="downloadpercent bar bar-success">0%</div>\n';
 	content += '</div>\n';
 	content += '</div>\n';
 
