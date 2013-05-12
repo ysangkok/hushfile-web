@@ -219,8 +219,8 @@ function download() {
 	xhr.onprogress = function(e) {
 		if (e.lengthComputable) {
 			temp = Math.round((e.loaded / e.total) * 100);
-			document.getElementById('downloadpercent').style.width = temp + '%';
-			document.getElementById('downloadpercent').textContent = temp + '%';
+			document.getElementById('download_progress_bar').style.width = temp + '%';
+			document.getElementById('download_progress_bar').textContent = temp + '%';
 		};
 	};
 
