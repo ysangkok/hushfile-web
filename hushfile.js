@@ -443,11 +443,19 @@ if(window.location.pathname == "/") {
 								document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
 							} catch(err) {
 								setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n');
+								// highligt no menu items
+								document.getElementById("upload").className="";
+								document.getElementById("about").className="";
+								document.getElementById("faq").className="";
 								return;
 							};
 						};
 					} else {
 						setContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n');
+						// highligt no menu items
+						document.getElementById("upload").className="";
+						document.getElementById("about").className="";
+						document.getElementById("faq").className="";
 						return;
 					};
 				};
@@ -460,6 +468,8 @@ if(window.location.pathname == "/") {
 				document.getElementById("upload").className="";
 				document.getElementById("about").className="";
 				document.getElementById("faq").className="";
+				
+				return;
 			};
 		} else if (this.status == 404) {
 			//fileid does not exist
