@@ -362,7 +362,7 @@ if(window.location.pathname == "/") {
 	if(window.location.hash.substr(1)=="") {
 		content = '<div class="alert alert-info">Enter password:</div>\n';
 		content += '<input type="text" id="password">\n';
-		content += '<button type="button" onclick="pwredirect(fileid);"\n';
+		content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid)>Go</button>"\n';
 		
 		setContent(content);
 		// highligt no menu items
