@@ -3,6 +3,11 @@ function setContent(content) {
 	document.getElementById('content').innerHTML=content
 };
 
+function pwredirect(fileid) {
+	password = document.getElementById('password').value;
+	window.location = "/"+fileid+"#"+password;
+};
+
 // return a random password of the given length
 function randomPassword(length) {
 	chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -353,7 +358,21 @@ if(window.location.pathname == "/") {
 } else {
 	// this is not a request for a known url, get fileid and password
 	var fileid = window.location.pathname.substr(1);
-	var password = window.location.hash.substr(1);
+	
+	if(window.location.hash.substr(1)=="") {
+		content = '<div class="alert alert-info">Enter password:</div>\n';
+		content += '<input type="text" id="password">\n';
+		content += '<button type="button" onclick="pwredirect(fileid);"\n';
+		
+		setContent(content);
+		// highligt no menu items
+		document.getElementById("upload").className="";
+		document.getElementById("about").className="";
+		document.getElementById("faq").className="";
+		return;
+	} else {
+		var password = window.location.hash.substr(1);
+	}
 	
 	// highligt no menu items
 	document.getElementById("upload").className="active";
