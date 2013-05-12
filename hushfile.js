@@ -429,7 +429,8 @@ if(window.location.pathname == "/") {
 						try {
 							metadata = CryptoJS.AES.decrypt(this.response, password).toString(CryptoJS.enc.Utf8);
 						} catch(err) {
-							alert("An error was encountered decrypting metadata: " + err);
+							setContent('<div class="alert alert-error">Unable to decrypt metadata, invalid password.</div>\n');
+							return;
 						};
 						
 						if(metadata != 'undefined') {
@@ -441,11 +442,13 @@ if(window.location.pathname == "/") {
 								document.getElementById('filesize').innerHTML = jsonmetadata.filesize;
 								document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
 							} catch(err) {
-								alert("An error was encountered parsing metadata: " + err);
+								setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n');
+								return;
 							};
 						};
 					} else {
-						alert("An error was encountered downloading metadata.");
+						setContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n');
+						return;
 					};
 				};
 				xhr2.send();
