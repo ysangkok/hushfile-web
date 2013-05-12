@@ -408,7 +408,7 @@ if(window.location.pathname == "/") {
 	content += '<div id="deleteresponse" style="display: none;">\n';
 	content += '</div>\n';
 	
-	setContent(content);
+	
 	
 	var download_progress = document.querySelector('.downloadpercent');
 	
@@ -422,6 +422,10 @@ if(window.location.pathname == "/") {
 			if (responseobject.exists) {
 				// fileid exists
 				var fileexists = true;
+				
+				// create page content
+				setContent(content);
+				
 				// download and decrypt metadata
 				var xhr2 = new XMLHttpRequest();
 				xhr2.open('GET', '/api/metadata?fileid='+fileid, true);
