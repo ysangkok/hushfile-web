@@ -369,150 +369,149 @@ if(window.location.pathname == "/") {
 		document.getElementById("upload").className="";
 		document.getElementById("about").className="";
 		document.getElementById("faq").className="";
-		return;
 	} else {
 		var password = window.location.hash.substr(1);
-	}
 	
-	// highligt no menu items
-	document.getElementById("upload").className="active";
-	document.getElementById("about").className="";
-	document.getElementById("faq").className="";
-	
-	// create download page content
-	content = '<h1>hushfile.it - download file</h1>\n';
-	content += '<div id="metadata" style="display: none;">\n';
+		// highligt no menu items
+		document.getElementById("upload").className="active";
+		document.getElementById("about").className="";
+		document.getElementById("faq").className="";
+		
+		// create download page content
+		content = '<h1>hushfile.it - download file</h1>\n';
+		content += '<div id="metadata" style="display: none;">\n';
 
-	// create metadata div 
-	content += '<div class="alert alert-success">\n';
-	content += '<p>Password accepted, metadata below. Click button to get and decrypt file.</p>\n';
-	content += '</div>\n';
-	
-	// table with metadata
-	content += '<table class="table table-condensed">\n';
-	content += '<tr><td>Filename</td><td id="filename">&nbsp;</td></tr>\n';
-	content += '<tr><td>Mime type</td><td id="mimetype">&nbsp;</td></tr>\n';
-	content += '<tr><td>File size</td><td id="filesize">&nbsp;</td></tr>\n';
-	content += '<tr><td>Uploader IP</td><td id="clientip">&nbsp;</td></tr>\n';
-	content += '<tr style="display:none"><td>Deletepassword</td><td id="deletepassword">&nbsp;</td></tr>\n';
-	content += '</table>\n';
-	content += '<button class="btn btn-large btn-primary btn-success" id="download" type="button" onclick="download();"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>\n';
-	content += '<button class="btn btn-large btn-primary btn-danger" id="delete" type="button" onclick="deletefile();"><i class="icon-trash icon-large"></i> Delete file</button>\n';
-	content += '</div>\n';
+		// create metadata div 
+		content += '<div class="alert alert-success">\n';
+		content += '<p>Password accepted, metadata below. Click button to get and decrypt file.</p>\n';
+		content += '</div>\n';
+		
+		// table with metadata
+		content += '<table class="table table-condensed">\n';
+		content += '<tr><td>Filename</td><td id="filename">&nbsp;</td></tr>\n';
+		content += '<tr><td>Mime type</td><td id="mimetype">&nbsp;</td></tr>\n';
+		content += '<tr><td>File size</td><td id="filesize">&nbsp;</td></tr>\n';
+		content += '<tr><td>Uploader IP</td><td id="clientip">&nbsp;</td></tr>\n';
+		content += '<tr style="display:none"><td>Deletepassword</td><td id="deletepassword">&nbsp;</td></tr>\n';
+		content += '</table>\n';
+		content += '<button class="btn btn-large btn-primary btn-success" id="download" type="button" onclick="download();"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>\n';
+		content += '<button class="btn btn-large btn-primary btn-danger" id="delete" type="button" onclick="deletefile();"><i class="icon-trash icon-large"></i> Delete file</button>\n';
+		content += '</div>\n';
 
-	// create downloading progress div
-	content += '<div id="downloading" style="display: none;">\n';
-	content += '<p><i id="downloadingdone" class="icon-spinner icon-spin"></i> <b>Downloading...</b></p>\n';
-	content += '<div class="progress progress-striped" id="download_progress_bar" style="width: 20em;">\n';
-	content += '<div id="download_progress_bar_percent" class="downloadpercent bar bar-success">0%</div>\n';
-	content += '</div>\n';
-	content += '</div>\n';
+		// create downloading progress div
+		content += '<div id="downloading" style="display: none;">\n';
+		content += '<p><i id="downloadingdone" class="icon-spinner icon-spin"></i> <b>Downloading...</b></p>\n';
+		content += '<div class="progress progress-striped" id="download_progress_bar" style="width: 20em;">\n';
+		content += '<div id="download_progress_bar_percent" class="downloadpercent bar bar-success">0%</div>\n';
+		content += '</div>\n';
+		content += '</div>\n';
 
-	// create decrypting div
-	content += '<div id="decrypting" style="display: none;">\n';
-	content += '<p><i id="decryptingdone" class="icon-spinner icon-spin"></i> <b>Decrypting...</b></p>\n';
-	content += '</div>\n';
+		// create decrypting div
+		content += '<div id="decrypting" style="display: none;">\n';
+		content += '<p><i id="decryptingdone" class="icon-spinner icon-spin"></i> <b>Decrypting...</b></p>\n';
+		content += '</div>\n';
 
-	// create user download div
-	content += '<div id="downloaddiv" style="display: none;"></div>\n';
-	
-	// create deleting div
-	content += '<div id="deleting" style="display: none;">\n';
-	content += '<p><i id="deletingdone" class="icon-spinner icon-spin"></i> <b>Deleting...</b></p>\n';
-	content += '</div>\n';
-	
-	// create deleteresponse div
-	content += '<div id="deleteresponse" style="display: none;">\n';
-	content += '</div>\n';
-	
-	// check if it is a file id that exists
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', '/api/exists?fileid='+fileid, true);
-	xhr.onload = function(e) {
-		if (this.status == 200) {
-			var responseobject = JSON.parse(xhr.responseText);
-			if (responseobject.exists) {
-				// fileid exists
-				
-				// create page content
-				setContent(content);
-				
-				// download and decrypt metadata
-				var xhr2 = new XMLHttpRequest();
-				xhr2.open('GET', '/api/metadata?fileid='+fileid, true);
-				xhr2.onload = function(e) {
-					if (this.status == 200) {
-						// decrypt metadata
-						try {
-							metadata = CryptoJS.AES.decrypt(this.response, password).toString(CryptoJS.enc.Utf8);
-						} catch(err) {
-							setContent('<div class="alert alert-error">Unable to decrypt metadata, invalid password.</div>\n');
-							return;
-						};
-						
-						if(metadata != 'undefined') {
+		// create user download div
+		content += '<div id="downloaddiv" style="display: none;"></div>\n';
+		
+		// create deleting div
+		content += '<div id="deleting" style="display: none;">\n';
+		content += '<p><i id="deletingdone" class="icon-spinner icon-spin"></i> <b>Deleting...</b></p>\n';
+		content += '</div>\n';
+		
+		// create deleteresponse div
+		content += '<div id="deleteresponse" style="display: none;">\n';
+		content += '</div>\n';
+		
+		// check if it is a file id that exists
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', '/api/exists?fileid='+fileid, true);
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				var responseobject = JSON.parse(xhr.responseText);
+				if (responseobject.exists) {
+					// fileid exists
+					
+					// create page content
+					setContent(content);
+					
+					// download and decrypt metadata
+					var xhr2 = new XMLHttpRequest();
+					xhr2.open('GET', '/api/metadata?fileid='+fileid, true);
+					xhr2.onload = function(e) {
+						if (this.status == 200) {
+							// decrypt metadata
 							try {
-								var jsonmetadata = JSON.parse(metadata);
-								document.getElementById('metadata').style.display="block";
-								document.getElementById('filename').innerHTML = jsonmetadata.filename;
-								document.getElementById('mimetype').innerHTML = jsonmetadata.mimetype;
-								document.getElementById('filesize').innerHTML = jsonmetadata.filesize;
-								document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
+								metadata = CryptoJS.AES.decrypt(this.response, password).toString(CryptoJS.enc.Utf8);
 							} catch(err) {
-								setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n');
-								// highligt no menu items
-								document.getElementById("upload").className="";
-								document.getElementById("about").className="";
-								document.getElementById("faq").className="";
+								setContent('<div class="alert alert-error">Unable to decrypt metadata, invalid password.</div>\n');
 								return;
 							};
+							
+							if(metadata != 'undefined') {
+								try {
+									var jsonmetadata = JSON.parse(metadata);
+									document.getElementById('metadata').style.display="block";
+									document.getElementById('filename').innerHTML = jsonmetadata.filename;
+									document.getElementById('mimetype').innerHTML = jsonmetadata.mimetype;
+									document.getElementById('filesize').innerHTML = jsonmetadata.filesize;
+									document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
+								} catch(err) {
+									setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n');
+									// highligt no menu items
+									document.getElementById("upload").className="";
+									document.getElementById("about").className="";
+									document.getElementById("faq").className="";
+									return;
+								};
+							};
+						} else {
+							setContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n');
+							// highligt no menu items
+							document.getElementById("upload").className="";
+							document.getElementById("about").className="";
+							document.getElementById("faq").className="";
+							return;
 						};
-					} else {
-						setContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n');
-						// highligt no menu items
-						document.getElementById("upload").className="";
-						document.getElementById("about").className="";
-						document.getElementById("faq").className="";
-						return;
 					};
-				};
-				xhr2.send();
-				
-				// create XHR to get IP
-				var ipxhr = new XMLHttpRequest();
-				ipxhr.open('GET', '/api/ip?fileid='+fileid, true);
-				ipxhr.onload = function(e) {
-					if (this.status == 200) {
-						var jsonip = JSON.parse(ipxhr.responseText);
-						document.getElementById('clientip').innerHTML = jsonip.uploadip;
-					} else {
-						alert("An error was encountered getting uploader ip.");
+					xhr2.send();
+					
+					// create XHR to get IP
+					var ipxhr = new XMLHttpRequest();
+					ipxhr.open('GET', '/api/ip?fileid='+fileid, true);
+					ipxhr.onload = function(e) {
+						if (this.status == 200) {
+							var jsonip = JSON.parse(ipxhr.responseText);
+							document.getElementById('clientip').innerHTML = jsonip.uploadip;
+						} else {
+							alert("An error was encountered getting uploader ip.");
+						};
 					};
+					// get IP
+					ipxhr.send();
+				} else {
+					// fileid does not exist
+					setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n');
+					
+					// highligt no menu items
+					document.getElementById("upload").className="";
+					document.getElementById("about").className="";
+					document.getElementById("faq").className="";
+					
+					return;
 				};
-				// get IP
-				ipxhr.send();
-			} else {
-				// fileid does not exist
+			} else if (this.status == 404) {
+				//fileid does not exist
 				setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n');
 				
 				// highligt no menu items
 				document.getElementById("upload").className="";
 				document.getElementById("about").className="";
 				document.getElementById("faq").className="";
-				
-				return;
 			};
-		} else if (this.status == 404) {
-			//fileid does not exist
-			setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n');
-			
-			// highligt no menu items
-			document.getElementById("upload").className="";
-			document.getElementById("about").className="";
-			document.getElementById("faq").className="";
 		};
+		
+		// send /exists request
+		xhr.send();
 	};
-	
-	// send /exists request
-	xhr.send();
 };
