@@ -138,8 +138,6 @@ function upload(cryptoobject,metadataobject,deletepassword) {
 	xhr.send(formData);
 };
 
-var download_progress = document.querySelector('.downloadpercent');
-
 //function that deletes the file
 function deletefile() {
 	// disable the delete button
@@ -221,8 +219,8 @@ function download() {
 	xhr.onprogress = function(e) {
 		if (e.lengthComputable) {
 			temp = Math.round((e.loaded / e.total) * 100);
-			download_progress.style.width = temp + '%';
-			download_progress.textContent = temp + '%';
+			document.getElementById('downloadpercent').style.width = temp + '%';
+			document.getElementById('downloadpercent').textContent = temp + '%';
 		};
 	};
 
@@ -407,10 +405,6 @@ if(window.location.pathname == "/") {
 	// create deleteresponse div
 	content += '<div id="deleteresponse" style="display: none;">\n';
 	content += '</div>\n';
-	
-	
-	
-	var download_progress = document.querySelector('.downloadpercent');
 	
 	// check if it is a file id that exists
 	var fileexists = false;
