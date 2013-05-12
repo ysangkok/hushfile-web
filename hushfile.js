@@ -415,7 +415,7 @@ if(window.location.pathname == "/") {
 			var responseobject = JSON.parse(xhr.responseText);
 			if (responseobject.exists) {
 				// fileid exists
-				var fileexists = true;
+				fileexists = true;
 				
 				// create page content
 				setContent(content);
