@@ -413,6 +413,7 @@ if(window.location.pathname == "/") {
 	var download_progress = document.querySelector('.downloadpercent');
 	
 	// check if it is a file id that exists
+	var fileexists = false;
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/api/exists?fileid='+fileid, true);
 	xhr.onload = function(e) {
@@ -420,6 +421,7 @@ if(window.location.pathname == "/") {
 			var responseobject = JSON.parse(xhr.responseText);
 			if (responseobject.exists) {
 				// fileid exists
+				var fileexists = true;
 				// download and decrypt metadata
 				var xhr2 = new XMLHttpRequest();
 				xhr2.open('GET', '/api/metadata?fileid='+fileid, true);
@@ -485,17 +487,19 @@ if(window.location.pathname == "/") {
 	// send /exists request
 	xhr.send();
 	
-	// create XHR to get IP
-	var ipxhr = new XMLHttpRequest();
-	ipxhr.open('GET', '/api/ip?fileid='+fileid, true);
-	ipxhr.onload = function(e) {
-		if (this.status == 200) {
-			var jsonip = JSON.parse(ipxhr.responseText);
-			document.getElementById('clientip').innerHTML = jsonip.uploadip;
-		} else {
-			alert("An error was encountered downloading metadata.");
+	if(fileexists) {
+		// create XHR to get IP
+		var ipxhr = new XMLHttpRequest();
+		ipxhr.open('GET', '/api/ip?fileid='+fileid, true);
+		ipxhr.onload = function(e) {
+			if (this.status == 200) {
+				var jsonip = JSON.parse(ipxhr.responseText);
+				document.getElementById('clientip').innerHTML = jsonip.uploadip;
+			} else {
+				alert("An error was encountered getting uploader ip.");
+			};
 		};
+		// get IP
+		ipxhr.send();
 	};
-	// get IP
-	ipxhr.send();
 };
