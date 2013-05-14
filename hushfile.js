@@ -7,7 +7,7 @@ function setContent(content,menuitem) {
 	
 	//set active menuitem
 	if(menuitem != '') {
-		document.getElementById(menuitem).className="";
+		document.getElementById(menuitem).className="active";
 	};
 };
 
