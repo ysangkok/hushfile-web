@@ -1,6 +1,14 @@
 // function to set page content
-function setContent(content) {
+function setContent(content,menuitem) {
 	document.getElementById('content').innerHTML=content
+	document.getElementById("upload").className="";
+	document.getElementById("about").className="";
+	document.getElementById("faq").className="";
+	
+	//set active menuitem
+	if(menuitem != '') {
+		document.getElementById(menuitem).className="";
+	};
 };
 
 function pwredirect(fileid) {
@@ -85,101 +93,65 @@ function getmetadata() {
 	// create deleteresponse div
 	content += '<div id="deleteresponse" style="display: none;">\n';
 	content += '</div>\n';
+
+	// create page content
+	setContent(content,'');
 	
-	// check if it is a file id that exists
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', '/api/exists?fileid='+fileid, true);
-	xhr.onload = function(e) {
+	// download and decrypt metadata
+	var xhr2 = new XMLHttpRequest();
+	xhr2.open('GET', '/api/metadata?fileid='+fileid, true);
+	xhr2.onload = function(e) {
 		if (this.status == 200) {
-			var responseobject = JSON.parse(xhr.responseText);
-			if (responseobject.exists) {
-				// fileid exists
-				
-				// create page content
-				setContent(content);
-				
-				// download and decrypt metadata
-				var xhr2 = new XMLHttpRequest();
-				xhr2.open('GET', '/api/metadata?fileid='+fileid, true);
-				xhr2.onload = function(e) {
-					if (this.status == 200) {
-						// decrypt metadata
-						try {
-							metadata = CryptoJS.AES.decrypt(this.response, password).toString(CryptoJS.enc.Utf8);
-						} catch(err) {
-							content = '<div class="alert alert-error">Unable to decrypt metadata, invalid password.</div>\n';
-							content += '<div class="alert alert-info">Enter password:</div>\n';
-							content += '<input type="text" id="password">\n';
-							content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid);">Go</button>\n';
-							setContent(content);
-							return;
-						};
-						
-						if(metadata != 'undefined') {
-							try {
-								var jsonmetadata = JSON.parse(metadata);
-								document.getElementById('metadata').style.display="block";
-								document.getElementById('filename').innerHTML = jsonmetadata.filename;
-								document.getElementById('mimetype').innerHTML = jsonmetadata.mimetype;
-								document.getElementById('filesize').innerHTML = jsonmetadata.filesize;
-								document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
-							} catch(err) {
-								setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n');
-								// highligt no menu items
-								document.getElementById("upload").className="";
-								document.getElementById("about").className="";
-								document.getElementById("faq").className="";
-								return;
-							};
-						};
-					} else {
-						setContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n');
-						// highligt no menu items
-						document.getElementById("upload").className="";
-						document.getElementById("about").className="";
-						document.getElementById("faq").className="";
-						return;
-					};
-				};
-				xhr2.send();
-				
-				// create XHR to get IP
-				var ipxhr = new XMLHttpRequest();
-				ipxhr.open('GET', '/api/ip?fileid='+fileid, true);
-				ipxhr.onload = function(e) {
-					if (this.status == 200) {
-						var jsonip = JSON.parse(ipxhr.responseText);
-						document.getElementById('clientip').innerHTML = jsonip.uploadip;
-					} else {
-						alert("An error was encountered getting uploader ip.");
-					};
-				};
-				// get IP
-				ipxhr.send();
-			} else {
-				// fileid does not exist
-				setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n');
-				
-				// highligt no menu items
-				document.getElementById("upload").className="";
-				document.getElementById("about").className="";
-				document.getElementById("faq").className="";
-				
+			// decrypt metadata
+			try {
+				metadata = CryptoJS.AES.decrypt(this.response, password).toString(CryptoJS.enc.Utf8);
+			} catch(err) {
+				content = '<div class="alert alert-error">Unable to decrypt metadata, invalid password.</div>\n';
+				content += '<div class="alert alert-info">Enter password:</div>\n';
+				content += '<input type="text" id="password">\n';
+				content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid);">Go</button>\n';
+				setContent(content,'');
 				return;
 			};
-		} else if (this.status == 404) {
-			//fileid does not exist
-			setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n');
 			
-			// highligt no menu items
-			document.getElementById("upload").className="";
-			document.getElementById("about").className="";
-			document.getElementById("faq").className="";
+			if(metadata != 'undefined') {
+				try {
+					var jsonmetadata = JSON.parse(metadata);
+					document.getElementById('metadata').style.display="block";
+					document.getElementById('filename').innerHTML = jsonmetadata.filename;
+					document.getElementById('mimetype').innerHTML = jsonmetadata.mimetype;
+					document.getElementById('filesize').innerHTML = jsonmetadata.filesize;
+					document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
+				} catch(err) {
+					setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n','');
+					// highligt no menu items
+					document.getElementById("upload").className="";
+					document.getElementById("about").className="";
+					document.getElementById("faq").className="";
+					return;
+				};
+			};
+		} else {
+			setContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n','');
+			return;
 		};
 	};
+	xhr2.send();
 	
-	// send /exists request
-	xhr.send();
+	// create XHR to get IP
+	var ipxhr = new XMLHttpRequest();
+	ipxhr.open('GET', '/api/ip?fileid='+fileid, true);
+	ipxhr.onload = function(e) {
+		if (this.status == 200) {
+			var jsonip = JSON.parse(ipxhr.responseText);
+			document.getElementById('clientip').innerHTML = jsonip.uploadip;
+		} else {
+			alert("An error was encountered getting uploader ip.");
+		};
+	};
+
+	// send IP request
+	ipxhr.send();
 }
 
 // function that handles reading file after it has been selected
@@ -451,7 +423,7 @@ if(window.location.pathname == "/") {
 	content += '<h4>Response</h4>\n';
 	content += '</div>\n';
 	
-	setContent(content);
+	setContent(content,'upload');
 	
 	var reader;
 	var load_progress = document.querySelector('.loadpercent');
@@ -467,11 +439,6 @@ if(window.location.pathname == "/") {
 	//wait for a file to be selected
 	document.getElementById('files').addEventListener('change', handleFileSelect, false);
 } else if(window.location.pathname == "/faq") {
-	// highligt menu item
-	document.getElementById("upload").className="";
-	document.getElementById("about").className="";
-	document.getElementById("faq").className="active";
-	
 	content = '<h1>hushfile.it Frequently Asked Questions</h1>\n';
 	content += '<dl>\n';
 	content += '<dt>Which browsers are known to work ?</dt>\n';
@@ -490,13 +457,8 @@ if(window.location.pathname == "/") {
 	content += '</blockquote>\n';
 	content += '</dd>\n';
 	content += '</dl>\n';
-	setContent(content);
+	setContent(content,'faq');
 } else if(window.location.pathname == "/about") {
-	// highligt menu item
-	document.getElementById("upload").className="";
-	document.getElementById("about").className="active";
-	document.getElementById("faq").className="";
-	
 	content = '<div class="alert alert-info">\n';
 	content += '<h4>Welcome</h4>\n';
 	content += 'hushfile is a file sharing service where the file is <b>encrypted before upload</b>. This enables you to share files while <b>keeping them private</b> from server operators and eavesdroppers. Just pick a file and it will be <b>encrypted in your browser</b> before it is uploaded. When the process is finished you will receive a link which you can share with anyone you wish. Just <b>keep the link secret</b>, it contains the password to decrypt the file!\n';
@@ -504,23 +466,44 @@ if(window.location.pathname == "/") {
 	content += '<h4>Background</h4>\n';
 	content += 'The idea for hushfile came from the pastebin <a href="https://ezcrypt.it/">ezcrypt.it</a>. Ezcrypt.it is like a normal pastebin, except that it encrypts the pasted text before it is uploaded to the server. Hushfile is a file-version of ezcrypt.it, an easy way to share files with those you wish to share with, and noone else. This might seem like a subtle difference from a normal pastebin or filesharing service, but it is a <b>great</b> idea. I firmly believe that the best way to promote privacy online is to put <b>easy to use encryption</b> into the hands of the end users. People are lazy, but if a private alternative is as easy to use as a non-private one, the choice is easy.\n';
 	content += '</div>\n';
-	setContent(content);
+	setContent(content,'about');
 } else {
 	// this is not a request for a known url, get fileid and password
 	var fileid = window.location.pathname.substr(1);
 	
-	if(window.location.hash.substr(1)=="") {
-		content = '<div class="alert alert-info">Enter password:</div>\n';
-		content += '<input type="text" id="password">\n';
-		content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid);">Go</button>\n';
-		
-		setContent(content);
-		
-		// highligt no menu items
-		document.getElementById("upload").className="";
-		document.getElementById("about").className="";
-		document.getElementById("faq").className="";
-	} else {
-		getmetadata();
+	// check if fileid exists
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', '/api/exists?fileid='+fileid, true);
+	xhr.onload = function(e) {
+		if (this.status == 200) {
+			var responseobject = JSON.parse(xhr.responseText);
+			if (responseobject.exists) {
+				// fileid exists
+				if(window.location.hash.substr(1)=="") {
+					content = '<div class="alert alert-info">Enter password:</div>\n';
+					content += '<input type="text" id="password">\n';
+					content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid);">Go</button>\n';
+					setContent(content,'');
+				} else {
+					getmetadata();
+				};
+			} else {
+				// fileid does not exist
+				setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','');
+				
+				// highligt no menu items
+				document.getElementById("upload").className="";
+				document.getElementById("about").className="";
+				document.getElementById("faq").className="";
+				
+				return;
+			};
+		} else if (this.status == 404) {
+			//fileid does not exist
+			setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','');
+		};
 	};
+	
+	// send /exists request
+	xhr.send();
 };
