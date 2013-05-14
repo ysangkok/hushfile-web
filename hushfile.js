@@ -107,7 +107,11 @@ function getmetadata() {
 						try {
 							metadata = CryptoJS.AES.decrypt(this.response, password).toString(CryptoJS.enc.Utf8);
 						} catch(err) {
-							setContent('<div class="alert alert-error">Unable to decrypt metadata, invalid password.</div>\n');
+							content = '<div class="alert alert-error">Unable to decrypt metadata, invalid password.</div>\n';
+							content += '<div class="alert alert-info">Enter password:</div>\n';
+							content += '<input type="text" id="password">\n';
+							content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid);">Go</button>\n';
+							setContent(content);
 							return;
 						};
 						
