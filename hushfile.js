@@ -1,7 +1,14 @@
-// set page content
+// function to set page content
 function setContent(content) {
 	document.getElementById('content').innerHTML=content
 };
+
+function pwredirect(fileid) {
+	password = document.getElementById('password').value;
+	window.location = "/"+fileid+"#"+password;
+	getmetadata();
+};
+
 
 // return a random password of the given length
 function randomPassword(length) {
@@ -20,10 +27,8 @@ function updateProgress(evt) {
 	if (evt.lengthComputable) {
 		var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
 		// Increase the load_progress bar length.
-		if (percentLoaded < 100) {
-			load_progress.style.width = percentLoaded + '%';
-			load_progress.textContent = percentLoaded + '%';
-		};
+		load_progress.style.width = percentLoaded + '%';
+		load_progress.textContent = percentLoaded + '%';
 	};
 };
 
@@ -172,6 +177,7 @@ function getmetadata() {
 	// send /exists request
 	xhr.send();
 }
+
 // function that handles reading file after it has been selected
 function handleFileSelect(evt) {
 	// Reset load_progress indicator on new file selection.
@@ -502,7 +508,7 @@ if(window.location.pathname == "/") {
 	if(window.location.hash.substr(1)=="") {
 		content = '<div class="alert alert-info">Enter password:</div>\n';
 		content += '<input type="text" id="password">\n';
-		content += '<button type="button" class="btn btn-large btn-success" onclick="getmetadata();">Go</button>\n';
+		content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect();">Go</button>\n';
 		
 		setContent(content);
 		
