@@ -51,11 +51,6 @@ function updateProgress(evt) {
 function getmetadata() {
 	var password = window.location.hash.substr(1);
 
-	// highligt no menu items
-	document.getElementById("upload").className="active";
-	document.getElementById("about").className="";
-	document.getElementById("faq").className="";
-	
 	// create download page content
 	content = '<h1>hushfile.it - download file</h1>\n';
 	content += '<div id="metadata" style="display: none;">\n';
@@ -132,10 +127,6 @@ function getmetadata() {
 					document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
 				} catch(err) {
 					setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n','');
-					// highligt no menu items
-					document.getElementById("upload").className="";
-					document.getElementById("about").className="";
-					document.getElementById("faq").className="";
 					return;
 				};
 			};
@@ -372,12 +363,6 @@ function download() {
 function handlerequest() {
 	if(window.location.pathname == "/") {
 		// show upload page
-
-		// highligt menu item
-		document.getElementById("upload").className="active";
-		document.getElementById("about").className="";
-		document.getElementById("faq").className="";
-		
 		// create welcome alert box
 		content =  '<div class="alert alert-info fade in">\n';
 		content += '<button type="button" class="close" data-dismiss="alert">&times;</button>\n';
@@ -475,12 +460,6 @@ function handlerequest() {
 				} else {
 					// fileid does not exist
 					setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','');
-					
-					// highligt no menu items
-					document.getElementById("upload").className="";
-					document.getElementById("about").className="";
-					document.getElementById("faq").className="";
-					
 					return;
 				};
 			} else if (this.status == 404) {
@@ -544,7 +523,7 @@ xhr.onload = function(e) {
 				// create divider li
 				li = document.createElement("li");
 				li.className = "divider-vertical";
-				document.getElementById('navbartopinner').appendChild(li);
+				document.getElementById('navmenu').appendChild(li);
 				
 				// create link li
 				li = document.createElement("li");
@@ -554,7 +533,7 @@ xhr.onload = function(e) {
 				linkText = document.createTextNode(key);
 				a.appendChild(linkText);
 				li.appendChild(a);
-				document.getElementById('navbartopinner').appendChild(li);
+				document.getElementById('navmenu').appendChild(li);
 			}
 		}
 		// configuration OK, handle request
