@@ -529,7 +529,7 @@ xhr.onload = function(e) {
 				li = document.createElement("li");
 				li.id = key;
 				a = document.createElement("a");
-				a.href="showPage(obj[key],key);";
+				a.href="javascript:showPage(" + obj[key] + "," + key + ");";
 				linkText = document.createTextNode(key);
 				a.appendChild(linkText);
 				li.appendChild(a);
