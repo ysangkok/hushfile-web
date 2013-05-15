@@ -41,8 +41,8 @@ function updateProgress(evt) {
 	if (evt.lengthComputable) {
 		var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
 		// Increase the load_progress bar length.
-		load_progress.style.width = percentLoaded + '%';
-		load_progress.textContent = percentLoaded + '%';
+		document.getElementById("filereadpercentbar").style.width = percentLoaded + '%';
+		document.getElementById("filereadpercentbar").textContent = percentLoaded + '%';
 	};
 };
 
@@ -156,13 +156,6 @@ function getmetadata() {
 
 // function that handles reading file after it has been selected
 function handleFileSelect(evt) {
-	// Reset load_progress indicator on new file selection.
-	load_progress.style.width = '0%';
-	load_progress.textContent = '0%';
-	document.getElementById('read_progress_div').style.display="block";
-	document.getElementById('encrypting').style.display="block";
-	document.getElementById('uploading').style.display="block";
-	
 	//create filereader object
 	reader = new FileReader();
 	
@@ -172,8 +165,8 @@ function handleFileSelect(evt) {
 	// runs after file reading completes
 	reader.onload = function(e) {
 		// Ensure that the load_progress bar displays 100% at the end.
-		load_progress.style.width = '100%';
-		load_progress.textContent = '100%';
+		document.getElementById("filereadpercentbar").style.width = '100%';
+		document.getElementById("filereadpercentbar").textContent = '100%';
 		document.getElementById('readingdone').className= 'icon-check';
 		document.getElementById('read_progress_div').style.color='green';
 		
@@ -395,7 +388,7 @@ function handlerequest() {
 		content += '<div id="read_progress_div" style="display: none;">\n'
 		content += '<p><i id="readingdone" class="icon-check-empty"></i> <b>Reading file...</b>\n';
 		content += '<div class="progress progress-striped" id="read_progress_bar" style="width: 20em;">\n';
-		content += '<div class="loadpercent bar bar-success">0%</div>\n';
+		content += '<div id="filereadpercentbar" class="loadpercent bar bar-success">0%</div>\n';
 		content += '</div></p>\n';
 		content += '<table class="table table-condensed">\n';
 		content += '<tr><td>Filename</td><td id="filename">&nbsp;</td></tr>\n';
@@ -425,7 +418,6 @@ function handlerequest() {
 		setContent(content,'upload');
 		
 		var reader;
-		var load_progress = document.querySelector('.loadpercent');
 		var upload_progress = document.querySelector('.uploadpercent');
 		var encrypted;
 		var filename;
