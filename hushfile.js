@@ -20,7 +20,7 @@ function setContent(content,menuitem) {
 function pwredirect(fileid) {
 	password = document.getElementById('password').value;
 	window.location = "/"+fileid+"#"+password;
-	getmetadata();
+	getmetadata(fileid);
 };
 
 
@@ -48,7 +48,7 @@ function updateProgress(evt) {
 
 // function to download and decrypt metadata, 
 // and create download page content
-function getmetadata() {
+function getmetadata(fileid) {
 	var password = window.location.hash.substr(1);
 
 	// create download page content
@@ -446,7 +446,7 @@ function handlerequest() {
 						content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid);">Go</button>\n';
 						setContent(content,'');
 					} else {
-						getmetadata();
+						getmetadata(fileid);
 					};
 				} else {
 					// fileid does not exist
