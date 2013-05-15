@@ -68,8 +68,8 @@ function getmetadata(fileid) {
 	content += '<tr><td>Uploader IP</td><td id="clientip">&nbsp;</td></tr>\n';
 	content += '<tr style="display:none"><td>Deletepassword</td><td id="deletepassword">&nbsp;</td></tr>\n';
 	content += '</table>\n';
-	content += '<button class="btn btn-large btn-primary btn-success" id="download" type="button" onclick="download(' + fileid + ');"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>\n';
-	content += '<button class="btn btn-large btn-primary btn-danger" id="delete" type="button" onclick="deletefile(' + fileid + ');"><i class="icon-trash icon-large"></i> Delete file</button>\n';
+	content += '<button class="btn btn-large btn-primary btn-success" id="download" type="button" onclick="download(\'' + fileid + '\');"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>\n';
+	content += '<button class="btn btn-large btn-primary btn-danger" id="delete" type="button" onclick="deletefile(\'' + fileid + '\');"><i class="icon-trash icon-large"></i> Delete file</button>\n';
 	content += '</div>\n';
 
 	// create downloading progress div
