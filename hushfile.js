@@ -301,6 +301,8 @@ function deletefile(fileid) {
 //function that downloads the file to the browser,
 //and decrypts and creates download button
 function download(fileid) {
+	// get password from window.location
+	var password = window.location.hash.substr(1);
 	// disable the download button
 	document.getElementById('download').className="btn btn-large btn-primary btn-success disabled";
 	// make download progress bar div visible
