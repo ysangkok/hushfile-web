@@ -7,10 +7,10 @@ function setContent(content,menuitem) {
 	// loop through menuitems
 	for(var i=0; i<menuitems.length; i++) { 
 		// this is the active menuitem
-		if(divs[i].id == menuitem) {
-			divs[i].className="menuitem active";
+		if(menuitems[i].id == menuitem) {
+			menuitems[i].className="menuitem active";
 		} else {
-			divs[i].className="menuitem";
+			menuitems[i].className="menuitem";
 		};
 	};
 };
@@ -529,7 +529,7 @@ xhr.onload = function(e) {
 				li = document.createElement("li");
 				li.id = key;
 				a = document.createElement("a");
-				a.href="javascript:showPage(" + obj[key] + "," + key + ");";
+				a.href="javascript:showPage('" + obj[key] + "','" + key + "');";
 				linkText = document.createTextNode(key);
 				a.appendChild(linkText);
 				li.appendChild(a);
