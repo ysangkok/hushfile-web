@@ -68,7 +68,7 @@ function getmetadata(fileid) {
 	content += '<tr><td>Uploader IP</td><td id="clientip">&nbsp;</td></tr>\n';
 	content += '<tr style="display:none"><td>Deletepassword</td><td id="deletepassword">&nbsp;</td></tr>\n';
 	content += '</table>\n';
-	content += '<button class="btn btn-large btn-primary btn-success" id="download" type="button" onclick="download(\'' + fileid + '\');"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>\n';
+	content += '<button class="btn btn-large btn-primary btn-success" id="downloadbtn" type="button" onclick="download(\'' + fileid + '\');"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>\n';
 	content += '<button class="btn btn-large btn-primary btn-danger" id="delete" type="button" onclick="deletefile(\'' + fileid + '\');"><i class="icon-trash icon-large"></i> Delete file</button>\n';
 	content += '</div>\n';
 
@@ -304,7 +304,7 @@ function download(fileid) {
 	// get password from window.location
 	var password = window.location.hash.substr(1);
 	// disable the download button
-	document.getElementById('download').className="btn btn-large btn-primary btn-success disabled";
+	document.getElementById('downloadbtn').className="btn btn-large btn-primary btn-success disabled";
 	// make download progress bar div visible
 	document.getElementById('downloading').style.display="block";
 	var xhr = new XMLHttpRequest();
