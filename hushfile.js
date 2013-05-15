@@ -478,11 +478,13 @@ function handlerequest() {
 function showPage(url,key) {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/'+url, true);
-	if (this.status == 200) {
-		setContent(xhr.responseText,key);
-	} else {
-		alert("Unable to get content, check client config!");
-	}
+	xhr.onload = function(e) {
+		if (this.status == 200) {
+			setContent(xhr.responseText,key);
+		} else {
+			alert("Unable to get content, check client config!");
+		};
+	};
 	xhr.send();
 };
 
