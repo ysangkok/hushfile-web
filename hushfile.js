@@ -112,7 +112,7 @@ function getmetadata(fileid) {
 				content = '<div class="alert alert-error">Unable to decrypt metadata, invalid password.</div>\n';
 				content += '<div class="alert alert-info">Enter password:</div>\n';
 				content += '<input type="text" id="password">\n';
-				content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid);">Go</button>\n';
+				content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(\'' + fileid + '\');">Go</button>\n';
 				setContent(content,'download');
 				return;
 			};
