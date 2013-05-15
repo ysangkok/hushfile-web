@@ -530,6 +530,7 @@ xhr.onload = function(e) {
 				// create link li
 				li = document.createElement("li");
 				li.id = key;
+				li.className = "menuitem";
 				a = document.createElement("a");
 				a.href="javascript:showPage('" + obj[key] + "','" + key + "');";
 				linkText = document.createTextNode(key);
