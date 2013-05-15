@@ -1,16 +1,22 @@
 // function to set page content
 function setContent(content,menuitem) {
+	// set main page content
 	document.getElementById('content').innerHTML=content
-	document.getElementById("upload").className="";
-	document.getElementById("about").className="";
-	document.getElementById("faq").className="";
-	
-	//set active menuitem
-	if(menuitem != '') {
-		document.getElementById(menuitem).className="active";
+	// get all menuitems
+	var menuitems = document.getElementsByClassName('menuitem');
+	// loop through menuitems
+	for(var i=0; i<menuitems.length; i++) { 
+		// this is the active menuitem
+		if(divs[i].id == menuitem) {
+			divs[i].className="menuitem active";
+		} else {
+			divs[i].className="menuitem";
+		};
 	};
 };
 
+
+// function to redirect the browser after a new password has been entered
 function pwredirect(fileid) {
 	password = document.getElementById('password').value;
 	window.location = "/"+fileid+"#"+password;
@@ -40,6 +46,8 @@ function updateProgress(evt) {
 	};
 };
 
+// function to download and decrypt metadata, 
+// and create download page content
 function getmetadata() {
 	var password = window.location.hash.substr(1);
 
@@ -154,6 +162,7 @@ function getmetadata() {
 	ipxhr.send();
 }
 
+
 // function that handles reading file after it has been selected
 function handleFileSelect(evt) {
 	// Reset load_progress indicator on new file selection.
@@ -199,6 +208,7 @@ function handleFileSelect(evt) {
 	reader.readAsArrayBuffer(evt.target.files[0]);
 };
 
+
 // function that encrypts the file,
 // and creates and encrypts metadata
 function encrypt() {
@@ -225,6 +235,7 @@ function encrypt() {
 	setTimeout('upload(cryptoobject,metadataobject,deletepassword)',1000);
 }
 
+// function that uploads the data to the server
 function upload(cryptoobject,metadataobject,deletepassword) {
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', '/api/upload', true);
@@ -265,6 +276,7 @@ function upload(cryptoobject,metadataobject,deletepassword) {
 	xhr.send(formData);
 };
 
+
 //function that deletes the file
 function deletefile() {
 	// disable the delete button
@@ -295,6 +307,7 @@ function deletefile() {
 	
 	xhr.send();
 }
+
 
 //function that downloads the file to the browser,
 //and decrypts and creates download button
@@ -355,155 +368,202 @@ function download() {
 };
 
 
+// main function to handle requests
+function handlerequest() {
+	if(window.location.pathname == "/") {
+		// show upload page
 
-if(window.location.pathname == "/") {
-	// show upload page
+		// highligt menu item
+		document.getElementById("upload").className="active";
+		document.getElementById("about").className="";
+		document.getElementById("faq").className="";
+		
+		// create welcome alert box
+		content =  '<div class="alert alert-info fade in">\n';
+		content += '<button type="button" class="close" data-dismiss="alert">&times;</button>\n';
+		content += '<h4>Welcome!</h4>\n';
+		content += 'hushfile is a file sharing service where the file is <b>encrypted before upload</b>. This enables you to share files while <b>keeping them private</b> from server operators and eavesdroppers. Just pick a file and it will be <b>encrypted in your browser</b> before it is uploaded. When the process is finished you will receive a link which you can share with anyone you wish. Just <b>keep the link secret</b>, it contains the password to decrypt the file!\n';
+		content += '</div>\n';
+		
+		// create upload form
+		content += '<form class="form-horizontal">\n';
+		content += '<div class="fileupload fileupload-new" data-provides="fileupload">\n';
+		content += '<div class="input-append">\n';
+		content += '<div class="uneditable-input span3">\n';
+		content += '<i class="icon-file fileupload-exists"></i>\n';
+		content += '<span class="fileupload-preview"></span>\n';
+		content += '</div>\n';
+		content += '<span class="btn btn-file"><span class="fileupload-new">Select file</span>\n';
+		content += '<span class="fileupload-exists">Change</span>\n';
+		content += '<input type="file" id="files" name="file">\n';
+		content += '</span>\n';
+		content += '<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>\n';
+		content += '</div>\n';
+		content += '</div>\n';
+		content += '<div class="input-append" style="display: none;">\n';
+		content += '<input class="input-large" type="text" id="password" name="password">\n';
+		content += '<span class="add-on">Password</span>\n';
+		content += '</div>\n';
+		content += '</form>\n';
+		
+		// create filereading progess div
+		content += '<div id="read_progress_div" style="display: none;">\n'
+		content += '<p><i id="readingdone" class="icon-check-empty"></i> <b>Reading file...</b>\n';
+		content += '<div class="progress progress-striped" id="read_progress_bar" style="width: 20em;">\n';
+		content += '<div class="loadpercent bar bar-success">0%</div>\n';
+		content += '</div></p>\n';
+		content += '<table class="table table-condensed">\n';
+		content += '<tr><td>Filename</td><td id="filename">&nbsp;</td></tr>\n';
+		content += '<tr><td>Mime type</td><td id="mimetype">&nbsp;</td></tr>\n';
+		content += '<tr><td>File size</td><td id="filesize">&nbsp;</td></tr>\n';
+		content += '</table>\n';
+		content += '</div>\n';
+		
+		// create encrypting div
+		content += '<div id="encrypting" style="display: none;">\n';
+		content += '<p><i id="encryptingdone" class="icon-check-empty"></i> <b>Encrypting...</b></p>\n';
+		content += '</div>\n';
+		
+		// create uploading div
+		content += '<div id="uploading" style="display: none;">\n';
+		content += '<p><i id="uploaddone" class="icon-check-empty"></i> <b>Uploading...</b>\n';
+		content += '<div class="progress progress-striped" id="upload_progress_bar" style="width: 20em;">\n';
+		content += '<div class="uploadpercent bar bar-success">0%</div>\n';
+		content += '</div></p>\n';
+		content += '</div>\n';
+		
+		// create response div
+		content += '<div class="alert alert-info" id="response" style="display: none;">\n';
+		content += '<h4>Response</h4>\n';
+		content += '</div>\n';
+		
+		setContent(content,'upload');
+		
+		var reader;
+		var load_progress = document.querySelector('.loadpercent');
+		var upload_progress = document.querySelector('.uploadpercent');
+		var encrypted;
+		var filename;
+		var mimetype;
+		var filesize;
 
-	// highligt menu item
-	document.getElementById("upload").className="active";
-	document.getElementById("about").className="";
-	document.getElementById("faq").className="";
-	
-	// create welcome alert box
-	content =  '<div class="alert alert-info fade in">\n';
-	content += '<button type="button" class="close" data-dismiss="alert">&times;</button>\n';
-	content += '<h4>Welcome!</h4>\n';
-	content += 'hushfile is a file sharing service where the file is <b>encrypted before upload</b>. This enables you to share files while <b>keeping them private</b> from server operators and eavesdroppers. Just pick a file and it will be <b>encrypted in your browser</b> before it is uploaded. When the process is finished you will receive a link which you can share with anyone you wish. Just <b>keep the link secret</b>, it contains the password to decrypt the file!\n';
-	content += '</div>\n';
-	
-	// create upload form
-	content += '<form class="form-horizontal">\n';
-	content += '<div class="fileupload fileupload-new" data-provides="fileupload">\n';
-	content += '<div class="input-append">\n';
-	content += '<div class="uneditable-input span3">\n';
-	content += '<i class="icon-file fileupload-exists"></i>\n';
-	content += '<span class="fileupload-preview"></span>\n';
-	content += '</div>\n';
-	content += '<span class="btn btn-file"><span class="fileupload-new">Select file</span>\n';
-	content += '<span class="fileupload-exists">Change</span>\n';
-	content += '<input type="file" id="files" name="file">\n';
-	content += '</span>\n';
-	content += '<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>\n';
-	content += '</div>\n';
-	content += '</div>\n';
-	content += '<div class="input-append" style="display: none;">\n';
-	content += '<input class="input-large" type="text" id="password" name="password">\n';
-	content += '<span class="add-on">Password</span>\n';
-	content += '</div>\n';
-	content += '</form>\n';
-	
-	// create filereading progess div
-	content += '<div id="read_progress_div" style="display: none;">\n'
-	content += '<p><i id="readingdone" class="icon-check-empty"></i> <b>Reading file...</b>\n';
-	content += '<div class="progress progress-striped" id="read_progress_bar" style="width: 20em;">\n';
-	content += '<div class="loadpercent bar bar-success">0%</div>\n';
-	content += '</div></p>\n';
-	content += '<table class="table table-condensed">\n';
-	content += '<tr><td>Filename</td><td id="filename">&nbsp;</td></tr>\n';
-	content += '<tr><td>Mime type</td><td id="mimetype">&nbsp;</td></tr>\n';
-	content += '<tr><td>File size</td><td id="filesize">&nbsp;</td></tr>\n';
-	content += '</table>\n';
-	content += '</div>\n';
-	
-	// create encrypting div
-	content += '<div id="encrypting" style="display: none;">\n';
-	content += '<p><i id="encryptingdone" class="icon-check-empty"></i> <b>Encrypting...</b></p>\n';
-	content += '</div>\n';
-	
-	// create uploading div
-	content += '<div id="uploading" style="display: none;">\n';
-	content += '<p><i id="uploaddone" class="icon-check-empty"></i> <b>Uploading...</b>\n';
-	content += '<div class="progress progress-striped" id="upload_progress_bar" style="width: 20em;">\n';
-	content += '<div class="uploadpercent bar bar-success">0%</div>\n';
-	content += '</div></p>\n';
-	content += '</div>\n';
-	
-	// create response div
-	content += '<div class="alert alert-info" id="response" style="display: none;">\n';
-	content += '<h4>Response</h4>\n';
-	content += '</div>\n';
-	
-	setContent(content,'upload');
-	
-	var reader;
-	var load_progress = document.querySelector('.loadpercent');
-	var upload_progress = document.querySelector('.uploadpercent');
-	var encrypted;
-	var filename;
-	var mimetype;
-	var filesize;
+		// create random password
+		document.getElementById('password').value=randomPassword(40);
 
-	// create random password
-	document.getElementById('password').value=randomPassword(40);
-
-	//wait for a file to be selected
-	document.getElementById('files').addEventListener('change', handleFileSelect, false);
-} else if(window.location.pathname == "/faq") {
-	content = '<h1>hushfile.it Frequently Asked Questions</h1>\n';
-	content += '<dl>\n';
-	content += '<dt>Which browsers are known to work ?</dt>\n';
-	content += '<dd>\n';
-	content += '<ul>\n';
-	content += '<li>Google Chrome Version 26.0.1410.64</li>\n';
-	content += '<li>Firefox 20.0.1</li>\n';
-	content += '<li>Please report more working browsers to the <a href="mailto:hushfile@hushfile.it">author</a>!</li>\n';
-	content += '</ul>\n';
-	content += '</dd>\n';
-	content += '<dt>Which encryption is used ? Is it safe ?</dt>\n';
-	content += '<dd>\n';
-	content += 'The file it\'s metadata are both encrypted with AES-256 in CBC mode with PKCS7 padding. The actual encryption is performed by the <a href="http://code.google.com/p/crypto-js/" target="_blank">CryptoJS 3.1.2</a> library. From their website:\n';
-	content += '<blockquote>\n';
-	content += '<p>CryptoJS is a growing collection of standard and secure cryptographic algorithms implemented in JavaScript using best practices and patterns. They are fast, and they have a consistent and simple interface.</p>\n';
-	content += '</blockquote>\n';
-	content += '</dd>\n';
-	content += '</dl>\n';
-	setContent(content,'faq');
-} else if(window.location.pathname == "/about") {
-	content = '<div class="alert alert-info">\n';
-	content += '<h4>Welcome</h4>\n';
-	content += 'hushfile is a file sharing service where the file is <b>encrypted before upload</b>. This enables you to share files while <b>keeping them private</b> from server operators and eavesdroppers. Just pick a file and it will be <b>encrypted in your browser</b> before it is uploaded. When the process is finished you will receive a link which you can share with anyone you wish. Just <b>keep the link secret</b>, it contains the password to decrypt the file!\n';
-	content += '<div class="alert alert-info">\n';
-	content += '<h4>Background</h4>\n';
-	content += 'The idea for hushfile came from the pastebin <a href="https://ezcrypt.it/">ezcrypt.it</a>. Ezcrypt.it is like a normal pastebin, except that it encrypts the pasted text before it is uploaded to the server. Hushfile is a file-version of ezcrypt.it, an easy way to share files with those you wish to share with, and noone else. This might seem like a subtle difference from a normal pastebin or filesharing service, but it is a <b>great</b> idea. I firmly believe that the best way to promote privacy online is to put <b>easy to use encryption</b> into the hands of the end users. People are lazy, but if a private alternative is as easy to use as a non-private one, the choice is easy.\n';
-	content += '</div>\n';
-	setContent(content,'about');
-} else {
-	// this is not a request for a known url, get fileid and password
-	var fileid = window.location.pathname.substr(1);
-	
-	// check if fileid exists
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', '/api/exists?fileid='+fileid, true);
-	xhr.onload = function(e) {
-		if (this.status == 200) {
-			var responseobject = JSON.parse(xhr.responseText);
-			if (responseobject.exists) {
-				// fileid exists
-				if(window.location.hash.substr(1)=="") {
-					content = '<div class="alert alert-info">Enter password:</div>\n';
-					content += '<input type="text" id="password">\n';
-					content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid);">Go</button>\n';
-					setContent(content,'');
+		//wait for a file to be selected
+		document.getElementById('files').addEventListener('change', handleFileSelect, false);
+	} else {
+		// this is not a request for a known url, get fileid and password
+		var fileid = window.location.pathname.substr(1);
+		
+		// check if fileid exists
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', '/api/exists?fileid='+fileid, true);
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				var responseobject = JSON.parse(xhr.responseText);
+				if (responseobject.exists) {
+					// fileid exists
+					if(window.location.hash.substr(1)=="") {
+						content = '<div class="alert alert-info">Enter password:</div>\n';
+						content += '<input type="text" id="password">\n';
+						content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid);">Go</button>\n';
+						setContent(content,'');
+					} else {
+						getmetadata();
+					};
 				} else {
-					getmetadata();
+					// fileid does not exist
+					setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','');
+					
+					// highligt no menu items
+					document.getElementById("upload").className="";
+					document.getElementById("about").className="";
+					document.getElementById("faq").className="";
+					
+					return;
 				};
-			} else {
-				// fileid does not exist
+			} else if (this.status == 404) {
+				//fileid does not exist
 				setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','');
-				
-				// highligt no menu items
-				document.getElementById("upload").className="";
-				document.getElementById("about").className="";
-				document.getElementById("faq").className="";
-				
-				return;
 			};
-		} else if (this.status == 404) {
-			//fileid does not exist
-			setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','');
 		};
+		
+		// send /exists request
+		xhr.send();
 	};
-	
-	// send /exists request
+};
+
+
+// function to show pages from custom menu items
+function showPage(url,key) {
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', '/'+url, true);
+	if (this.status == 200) {
+		setContent(xhr.responseText,key);
+	} else {
+		alert("Unable to get content, check client config!");
+	}
 	xhr.send();
 };
+
+
+// load and apply config
+var xhr = new XMLHttpRequest();
+xhr.open('GET', '/hushfile-config.json', true);
+xhr.onload = function(e) {
+	if (this.status == 200) {
+		var config = JSON.parse(xhr.responseText);
+		
+		// handle footer config
+		if(!(config.footer.showfooter)) {
+			document.getElementById('navbarbottom').style.display = 'none';
+		} else {
+			if(config.footer.footer == "default") {
+				// show the default footer, set email
+				document.getElementById('operatoremail').href = 'mailto:'+config.footer.operatoremail;
+			} else {
+				// get and show custom footer
+				footerxhr = new XMLHttpRequest();
+				footerxhr.open('GET', '/'+config.footer.footer, true);
+				footerxhr.onload = function(e) {
+					if (this.status == 200) {
+						// footer fetched OK, replace default footer
+						document.getElementById('navbarbottominner').innerHTML=footerxhr.responseText;
+					} else {
+						document.getElementById('navbarbottominner').innerHTML='<div class="alert alert-error">Unable to get footer :( Check client config!</div>';
+					};
+				};
+			};
+		};
+		
+		// handle menu config, loop through custom menu items
+		for(var i=0;i<config.menuitems.length;i++){
+			var obj = config.menuitems[i];
+			for(var key in obj){
+				// create divider li
+				li = document.createElement("li");
+				li.className = "divider-vertical";
+				document.getElementById('navbartopinner').appendChild(li);
+				
+				// create link li
+				li = document.createElement("li");
+				li.id = key;
+				a = document.createElement("a");
+				a.href="showPage(obj[key],key);";
+				linkText = document.createTextNode(key);
+				a.appendChild(linkText);
+				li.appendChild(a);
+				document.getElementById('navbartopinner').appendChild(li);
+			}
+		}
+		// configuration OK, handle request
+		handlerequest();
+	} else {
+		// unable to get config, use defaults
+		handlerequest();
+	};
+};
+
+// send initial request to get config
+xhr.send();

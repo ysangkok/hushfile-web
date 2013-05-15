@@ -1,0 +1,8 @@
+{
+    "footer": {
+        "showfooter": true,
+        "footer": "default",
+        "operatoremail": "operator@example.com"
+    },
+    "menuitems": []
+}
