@@ -18,6 +18,13 @@
                         <a class="brand offset2" href="/">hushfile.it</a>
                         <ul id="navmenu" class="nav">
                             <li id="upload" class="menuitem"><a href="/" onclick>Upload</a></li>
+                            <li class="divider-vertical"></li>
+                            <li id="download" class="menuitem">
+                                <form onsubmit="javascript:window.location='/'+document.getElementById('fileidbox').value; return false;" class="navbar-search pull-left">
+                                    <input id="fileidbox" type="text" class="search-query" placeholder="Download">
+                                </form>
+                            </li>
+
                         </ul>
                     </div>
                 </div>

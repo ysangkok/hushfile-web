@@ -98,7 +98,7 @@ function getmetadata(fileid) {
 	content += '</div>\n';
 
 	// create page content
-	setContent(content,'');
+	setContent(content,'download');
 	
 	// download and decrypt metadata
 	var xhr2 = new XMLHttpRequest();
@@ -113,7 +113,7 @@ function getmetadata(fileid) {
 				content += '<div class="alert alert-info">Enter password:</div>\n';
 				content += '<input type="text" id="password">\n';
 				content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid);">Go</button>\n';
-				setContent(content,'');
+				setContent(content,'download');
 				return;
 			};
 			
@@ -126,12 +126,12 @@ function getmetadata(fileid) {
 					document.getElementById('filesize').innerHTML = jsonmetadata.filesize;
 					document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
 				} catch(err) {
-					setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n','');
+					setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n','download');
 					return;
 				};
 			};
 		} else {
-			setContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n','');
+			setContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n','download');
 			return;
 		};
 	};
@@ -446,18 +446,18 @@ function handlerequest() {
 						content = '<div class="alert alert-info">Enter password:</div>\n';
 						content += '<input type="text" id="password">\n';
 						content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(fileid);">Go</button>\n';
-						setContent(content,'');
+						setContent(content,'download');
 					} else {
 						getmetadata(fileid);
 					};
 				} else {
 					// fileid does not exist
-					setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','');
+					setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','download');
 					return;
 				};
 			} else if (this.status == 404) {
 				//fileid does not exist
-				setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','');
+				setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','download');
 			};
 		};
 		
