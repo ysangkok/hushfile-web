@@ -156,6 +156,11 @@ function getmetadata() {
 
 // function that handles reading file after it has been selected
 function handleFileSelect(evt) {
+	// show upload page elements
+	document.getElementById('read_progress_div').style.display="block";
+	document.getElementById('encrypting').style.display="block";
+	document.getElementById('uploading').style.display="block";
+
 	//create filereader object
 	reader = new FileReader();
 	
@@ -225,8 +230,8 @@ function upload(cryptoobject,metadataobject,deletepassword) {
 	xhr.open('POST', '/api/upload', true);
 	xhr.onload = function(e) {
 		//make sure progress is at 100%
-		upload_progress.style.width = '100%';
-		upload_progress.textContent = '100%';
+		document.getElementById("uploadprogressbar").style.width = '100%';
+		document.getElementById("uploadprogressbar").textContent = '100%';
 		//parse json reply
 		try {
 			var responseobject = JSON.parse(xhr.responseText);
@@ -249,8 +254,8 @@ function upload(cryptoobject,metadataobject,deletepassword) {
 	xhr.upload.onprogress = function(e) {
 		if (e.lengthComputable) {
 			temp = Math.round((e.loaded / e.total) * 100);
-			upload_progress.style.width = temp + '%';
-			upload_progress.textContent = temp + '%';
+			document.getElementById("uploadprogressbar").style.width = temp + '%';
+			document.getElementById("uploadprogressbar").textContent = temp + '%';
 		};
 	};
 	var formData = new FormData();
@@ -406,7 +411,7 @@ function handlerequest() {
 		content += '<div id="uploading" style="display: none;">\n';
 		content += '<p><i id="uploaddone" class="icon-check-empty"></i> <b>Uploading...</b>\n';
 		content += '<div class="progress progress-striped" id="upload_progress_bar" style="width: 20em;">\n';
-		content += '<div class="uploadpercent bar bar-success">0%</div>\n';
+		content += '<div id="uploadprogressbar" class="uploadpercent bar bar-success">0%</div>\n';
 		content += '</div></p>\n';
 		content += '</div>\n';
 		
@@ -415,15 +420,9 @@ function handlerequest() {
 		content += '<h4>Response</h4>\n';
 		content += '</div>\n';
 		
+		// show upload page content
 		setContent(content,'upload');
 		
-		var reader;
-		var upload_progress = document.querySelector('.uploadpercent');
-		var encrypted;
-		var filename;
-		var mimetype;
-		var filesize;
-
 		// create random password
 		document.getElementById('password').value=randomPassword(40);
 
