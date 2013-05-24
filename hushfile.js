@@ -96,6 +96,13 @@ function getmetadata(fileid) {
 	// create deleteresponse div
 	content += '<div id="deleteresponse" style="display: none;">\n';
 	content += '</div>\n';
+	
+	// create image preview div
+	content += '<div if="imagediv" style="display: none;">\n';
+	content += '<h3>Image preview</h3>\n';
+	content += '<div class="offset1 span6" id="imagepreview">\n';
+	content += '</div></div>\n';
+
 
 	// create page content
 	setContent(content,'download');
@@ -341,6 +348,20 @@ function download(fileid) {
 			
 			//make div visible
 			document.getElementById('downloaddiv').style.display="block";
+			
+			// if this is an image, make a preview
+			if((/image/i).test(document.getElementById('mimetype').innerHTML)){
+				img = document.createElement("img");
+				img.className="img-rounded";
+				img.src = window.URL.createObjectURL(fileblob);
+				a = document.createElement("a");
+				a.href = window.URL.createObjectURL(fileblob);
+				a.download = document.getElementById('filename').innerHTML;
+				a.appendChild(img);
+				document.getElementById('imagepreview').appendChild(a);
+				document.getElementById('imagediv').style.display="block";
+			};
+
 		} else {
 			alert("An error was encountered downloading filedata.");
 		};
