@@ -98,7 +98,7 @@ function getmetadata(fileid) {
 	content += '</div>\n';
 	
 	// create image preview div
-	content += '<div if="imagediv" style="display: none;">\n';
+	content += '<div id="imagediv" style="display: none;">\n';
 	content += '<h3>Image preview</h3>\n';
 	content += '<div class="offset1 span6" id="imagepreview">\n';
 	content += '</div></div>\n';
