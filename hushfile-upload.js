@@ -1,25 +1,3 @@
-// return a random password of the given length
-function randomPassword(length){
-	var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_-";
-	var pass="";
-	var randomBuf = new Uint8Array(length);
-	window.crypto.getRandomValues(randomBuf);
-	for(var i=0;i<length;i++)
-	pass += chars.charAt(Math.floor(randomBuf[i]/4));
-	return pass;
-}
-
-// progress function for filereader on upload page
-function updateProgress(evt) {
-	// evt is an ProgressEvent.
-	if (evt.lengthComputable) {
-		var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
-		// Increase the load_progress bar length.
-		document.getElementById("filereadpercentbar").style.width = percentLoaded + '%';
-		document.getElementById("filereadpercentbar").textContent = percentLoaded + '%';
-	};
-};
-
 // function that handles reading file after it has been selected
 function handleFileSelect(evt) {
 	// show upload page elements
@@ -131,4 +109,26 @@ function upload(cryptoobject,metadataobject,deletepassword) {
 	formData.append('metadata', metadataobject);
 	formData.append('deletepassword', deletepassword);
 	xhr.send(formData);
+};
+
+// return a random password of the given length
+function randomPassword(length){
+	var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_-";
+	var pass="";
+	var randomBuf = new Uint8Array(length);
+	window.crypto.getRandomValues(randomBuf);
+	for(var i=0;i<length;i++)
+	pass += chars.charAt(Math.floor(randomBuf[i]/4));
+	return pass;
+}
+
+// progress function for filereader on upload page
+function updateProgress(evt) {
+	// evt is an ProgressEvent.
+	if (evt.lengthComputable) {
+		var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+		// Increase the load_progress bar length.
+		document.getElementById("filereadpercentbar").style.width = percentLoaded + '%';
+		document.getElementById("filereadpercentbar").textContent = percentLoaded + '%';
+	};
 };

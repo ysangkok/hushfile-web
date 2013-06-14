@@ -3,12 +3,6 @@ function handlerequest() {
 	if(window.location.pathname == "/") {
 		// show upload page
 		showPage('upload.html','upload');
-
-		// create random password
-		document.getElementById('password').value=randomPassword(40);
-
-		//wait for a file to be selected
-		document.getElementById('files').addEventListener('change', handleFileSelect, false);
 	} else {
 		// this is not a request for a known url, get fileid and password
 		var fileid = window.location.pathname.substr(1);
