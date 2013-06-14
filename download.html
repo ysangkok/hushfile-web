@@ -1,0 +1,53 @@
+<!-- headline -->
+<h1>hushfile.it - download file</h1>
+
+<!-- metadata div -->
+<div id="metadata" style="display: none;">
+    <div class="alert alert-success">
+        <p>Password accepted, metadata below. Click button to get and decrypt file.</p>
+    </div>
+
+    <!-- table with metadata -->
+    <table class="table table-condensed">
+        <tr><td>Filename</td><td id="filename">&nbsp;</td></tr>
+        <tr><td>Mime type</td><td id="mimetype">&nbsp;</td></tr>
+        <tr><td>File size</td><td id="filesize">&nbsp;</td></tr>
+        <tr><td>Uploader IP</td><td id="clientip">&nbsp;</td></tr>
+        <tr style="display:none"><td>Deletepassword</td><td id="deletepassword">&nbsp;</td></tr>
+    </table>
+ 
+    <!-- download and delete buttons -->
+    <button class="btn btn-large btn-primary btn-success" id="downloadbtn" type="button" onclick="download(\'' + fileid + '\');"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>
+    <button class="btn btn-large btn-primary btn-danger" id="delete" type="button" onclick="deletefile(\'' + fileid + '\');"><i class="icon-trash icon-large"></i> Delete file</button>
+</div>
+
+<!-- create downloading progress div -->
+<div id="downloading" style="display: none;">
+    <p><i id="downloadingdone" class="icon-spinner icon-spin"></i> <b>Downloading...</b></p>
+    <div class="progress progress-striped" id="download_progress_bar" style="width: 20em;">
+        <div id="download_progress_bar_percent" class="downloadpercent bar bar-success">0%</div>
+    </div>
+</div>
+
+<!-- create decrypting div -->
+<div id="decrypting" style="display: none;">
+    <p><i id="decryptingdone" class="icon-spinner icon-spin"></i> <b>Decrypting...</b></p>
+</div>
+
+<!-- create user download div -->
+<div id="downloaddiv" style="display: none;"></div>
+	
+<!-- create deleting div -->
+<div id="deleting" style="display: none;">
+    <p><i id="deletingdone" class="icon-spinner icon-spin"></i> <b>Deleting...</b></p>
+</div>
+
+<!-- create deleteresponse div -->
+<div id="deleteresponse" style="display: none;"></div>
+	
+<!-- create image preview div -->
+<div id="imagediv" style="display: none;">
+    <h3>Image preview</h3>
+    <div class="offset1 span6" id="imagepreview">
+    </div>
+</div>

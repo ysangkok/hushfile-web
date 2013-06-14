@@ -1,0 +1,59 @@
+<!-- welcome alertbox -->
+<div class="alert alert-info fade in">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Welcome!</h4>
+    hushfile is a file sharing service where the file is <b>encrypted before upload</b>. This enables you to share files while <b>keeping them private</b> from server operators and eavesdroppers. Just pick a file and it will be <b>encrypted in your browser</b> before it is uploaded. When the process is finished you will receive a link which you can share with anyone you wish. Just <b>keep the link secret</b>, it contains the password to decrypt the file!
+</div>
+
+<!-- file select button -->
+<div style="text-align: center;" id="uploadbuttondiv">
+    <form class="form-horizontal">
+        <div class="fileupload fileupload-new" data-provides="fileupload">
+            <span class="btn btn-file"><span class="fileupload-new"><i style="color: green;" class="icon-upload icon-4x"></i></span><input type="file" id="files"></span>
+            <span class="fileupload-preview"></span>
+        </div>
+        <input class="input-large" type="text" id="password" name="password" style="display: none;">
+    </form>
+    <p style="margin-top: -1.2em;"><h4>Select file</h4></p>
+</div>
+
+<!-- file read progress div -->
+<div id="read_progress_div" style="display: none;">
+    <p>
+        <i id="readingdone" class="icon-check-empty"></i> <b>Reading file...</b>
+        <div class="progress progress-striped" id="read_progress_bar" style="width: 20em;">
+            <div id="filereadpercentbar" class="loadpercent bar bar-success">0%</div>
+        </div>
+    </p>
+</div>
+
+<!-- file info div -->
+<div id="file_info_div" style="display: none;">
+    <table class="table table-condensed">
+        <tr><td>Filename</td><td id="filename">&nbsp;</td></tr>
+        <tr><td>Mime type</td><td id="mimetype">&nbsp;</td></tr>
+        <tr><td>File size</td><td id="filesize">&nbsp;</td></tr>
+    </table>
+</div>
+
+<!-- encrypting div -->
+<div id="encrypting" style="display: none;">
+    <p>
+        <i id="encryptingdone" class="icon-check-empty"></i> <b>Encrypting...</b>
+    </p>
+</div>
+
+<!-- uploading div -->
+<div id="uploading" style="display: none;">
+    <p>
+        <i id="uploaddone" class="icon-check-empty"></i> <b>Uploading...</b>
+        <div class="progress progress-striped" id="upload_progress_bar" style="width: 20em;">
+            <div id="uploadprogressbar" class="uploadpercent bar bar-success">0%</div>
+        </div>
+    </p>
+</div>
+
+<!-- response div -->
+<div class="alert alert-info" id="response" style="display: none;">
+    <h4>Response</h4>
+</div>

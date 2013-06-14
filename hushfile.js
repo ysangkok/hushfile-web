@@ -50,62 +50,9 @@ function updateProgress(evt) {
 function getmetadata(fileid) {
 	var password = window.location.hash.substr(1);
 
-	// create download page content
-	content = '<h1>hushfile.it - download file</h1>\n';
-	content += '<div id="metadata" style="display: none;">\n';
+	// show download page
+	showPage('download.html','download');
 
-	// create metadata div 
-	content += '<div class="alert alert-success">\n';
-	content += '<p>Password accepted, metadata below. Click button to get and decrypt file.</p>\n';
-	content += '</div>\n';
-	
-	// table with metadata
-	content += '<table class="table table-condensed">\n';
-	content += '<tr><td>Filename</td><td id="filename">&nbsp;</td></tr>\n';
-	content += '<tr><td>Mime type</td><td id="mimetype">&nbsp;</td></tr>\n';
-	content += '<tr><td>File size</td><td id="filesize">&nbsp;</td></tr>\n';
-	content += '<tr><td>Uploader IP</td><td id="clientip">&nbsp;</td></tr>\n';
-	content += '<tr style="display:none"><td>Deletepassword</td><td id="deletepassword">&nbsp;</td></tr>\n';
-	content += '</table>\n';
-	content += '<button class="btn btn-large btn-primary btn-success" id="downloadbtn" type="button" onclick="download(\'' + fileid + '\');"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>\n';
-	content += '<button class="btn btn-large btn-primary btn-danger" id="delete" type="button" onclick="deletefile(\'' + fileid + '\');"><i class="icon-trash icon-large"></i> Delete file</button>\n';
-	content += '</div>\n';
-
-	// create downloading progress div
-	content += '<div id="downloading" style="display: none;">\n';
-	content += '<p><i id="downloadingdone" class="icon-spinner icon-spin"></i> <b>Downloading...</b></p>\n';
-	content += '<div class="progress progress-striped" id="download_progress_bar" style="width: 20em;">\n';
-	content += '<div id="download_progress_bar_percent" class="downloadpercent bar bar-success">0%</div>\n';
-	content += '</div>\n';
-	content += '</div>\n';
-
-	// create decrypting div
-	content += '<div id="decrypting" style="display: none;">\n';
-	content += '<p><i id="decryptingdone" class="icon-spinner icon-spin"></i> <b>Decrypting...</b></p>\n';
-	content += '</div>\n';
-
-	// create user download div
-	content += '<div id="downloaddiv" style="display: none;"></div>\n';
-	
-	// create deleting div
-	content += '<div id="deleting" style="display: none;">\n';
-	content += '<p><i id="deletingdone" class="icon-spinner icon-spin"></i> <b>Deleting...</b></p>\n';
-	content += '</div>\n';
-	
-	// create deleteresponse div
-	content += '<div id="deleteresponse" style="display: none;">\n';
-	content += '</div>\n';
-	
-	// create image preview div
-	content += '<div id="imagediv" style="display: none;">\n';
-	content += '<h3>Image preview</h3>\n';
-	content += '<div class="offset1 span6" id="imagepreview">\n';
-	content += '</div></div>\n';
-
-
-	// create page content
-	setContent(content,'download');
-	
 	// download and decrypt metadata
 	var xhr2 = new XMLHttpRequest();
 	xhr2.open('GET', '/api/metadata?fileid='+fileid, true);
@@ -199,7 +146,8 @@ function handleFileSelect(evt) {
 	document.getElementById('filename').innerHTML = filename;
 	document.getElementById('mimetype').innerHTML = mimetype;
 	document.getElementById('filesize').innerHTML = filesize;
-
+	document.getElementById('file_info_div').style.display="block";
+	
 	// begin reading the file
 	reader.readAsArrayBuffer(evt.target.files[0]);
 };
@@ -384,59 +332,8 @@ function download(fileid) {
 function handlerequest() {
 	if(window.location.pathname == "/") {
 		// show upload page
-		// create welcome alert box
-		content =  '<div class="alert alert-info fade in">\n';
-		content += '<button type="button" class="close" data-dismiss="alert">&times;</button>\n';
-		content += '<h4>Welcome!</h4>\n';
-		content += 'hushfile is a file sharing service where the file is <b>encrypted before upload</b>. This enables you to share files while <b>keeping them private</b> from server operators and eavesdroppers. Just pick a file and it will be <b>encrypted in your browser</b> before it is uploaded. When the process is finished you will receive a link which you can share with anyone you wish. Just <b>keep the link secret</b>, it contains the password to decrypt the file!\n';
-		content += '</div>\n';
-		
-		// create upload form
-		content += '<div style="text-align: center;" id="uploadbuttondiv">\n';
-		content += '<form class="form-horizontal">\n';
-		content += '<div class="fileupload fileupload-new" data-provides="fileupload">\n';
-		content += '<span class="btn btn-file"><span class="fileupload-new"><i style="color: green;" class="icon-upload icon-4x"></i></span><input type="file" id="files"></span>\n';
-		content += '<span class="fileupload-preview"></span>\n';
-		content += '</div>\n';
-		content += '<input class="input-large" type="text" id="password" name="password" style="display: none;">\n';
-		content += '</form>\n';
-		content += '<p style="margin-top: -1.2em;"><h4>Select file</h4></p>\n';
-		content += '</div>\n';
-		
-		// create filereading progess div
-		content += '<div id="read_progress_div" style="display: none;">\n'
-		content += '<p><i id="readingdone" class="icon-check-empty"></i> <b>Reading file...</b>\n';
-		content += '<div class="progress progress-striped" id="read_progress_bar" style="width: 20em;">\n';
-		content += '<div id="filereadpercentbar" class="loadpercent bar bar-success">0%</div>\n';
-		content += '</div></p>\n';
-		content += '<table class="table table-condensed">\n';
-		content += '<tr><td>Filename</td><td id="filename">&nbsp;</td></tr>\n';
-		content += '<tr><td>Mime type</td><td id="mimetype">&nbsp;</td></tr>\n';
-		content += '<tr><td>File size</td><td id="filesize">&nbsp;</td></tr>\n';
-		content += '</table>\n';
-		content += '</div>\n';
-		
-		// create encrypting div
-		content += '<div id="encrypting" style="display: none;">\n';
-		content += '<p><i id="encryptingdone" class="icon-check-empty"></i> <b>Encrypting...</b></p>\n';
-		content += '</div>\n';
-		
-		// create uploading div
-		content += '<div id="uploading" style="display: none;">\n';
-		content += '<p><i id="uploaddone" class="icon-check-empty"></i> <b>Uploading...</b>\n';
-		content += '<div class="progress progress-striped" id="upload_progress_bar" style="width: 20em;">\n';
-		content += '<div id="uploadprogressbar" class="uploadpercent bar bar-success">0%</div>\n';
-		content += '</div></p>\n';
-		content += '</div>\n';
-		
-		// create response div
-		content += '<div class="alert alert-info" id="response" style="display: none;">\n';
-		content += '<h4>Response</h4>\n';
-		content += '</div>\n';
-		
-		// show upload page content
-		setContent(content,'upload');
-		
+		showPage('upload.html','upload');
+
 		// create random password
 		document.getElementById('password').value=randomPassword(40);
 
