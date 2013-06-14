@@ -396,6 +396,7 @@ function handlerequest() {
 		content += '<span class="btn btn-file"><span class="fileupload-new">Select file</span><input type="file" id="files"></span>\n';
 		content += '<span class="fileupload-preview"></span>\n';
 		content += '</div>\n';
+		content += '<input class="input-large" type="text" id="password" name="password" style="display: none;">\n';
 		content += '</form>\n';
 		
 		// create filereading progess div
