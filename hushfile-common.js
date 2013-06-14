@@ -78,6 +78,7 @@ function showPage(url,key) {
 			
 			if(key == 'download') {
 				// get metadata
+				var fileid = window.location.pathname.substr(1);
 				getmetadata(fileid);
 			}
 		} else {
