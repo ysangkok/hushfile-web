@@ -21,7 +21,8 @@ function handlerequest() {
 						content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(\'' + fileid + '\');">Go</button>\n';
 						setContent(content,'download');
 					} else {
-						getmetadata(fileid);
+						// show download page
+						showPage('download.html','download');
 					};
 				} else {
 					// fileid does not exist
