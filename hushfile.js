@@ -163,6 +163,7 @@ function getmetadata(fileid) {
 // function that handles reading file after it has been selected
 function handleFileSelect(evt) {
 	// show upload page elements
+	document.getElementById('uploadbuttondiv').style.display="none";
 	document.getElementById('read_progress_div').style.display="block";
 	document.getElementById('encrypting').style.display="block";
 	document.getElementById('uploading').style.display="block";
@@ -391,13 +392,15 @@ function handlerequest() {
 		content += '</div>\n';
 		
 		// create upload form
-		content += '<form class="form-horizontal">\n';		
+		content += '<div class="offset4 span1" id="uploadbuttondiv">\n';
+		content += '<form class="form-horizontal">\n';
 		content += '<div class="fileupload fileupload-new" data-provides="fileupload">\n';
-		content += '<span class="btn btn-file"><span class="fileupload-new"><i class="icon-upload icon-4x"></i></span><input type="file" id="files"></span>\n';
+		content += '<span class="btn btn-file"><span class="fileupload-new"><i style="color: green;" class="icon-upload icon-4x"></i></span><input type="file" id="files"></span>\n';
 		content += '<span class="fileupload-preview"></span>\n';
 		content += '</div>\n';
 		content += '<input class="input-large" type="text" id="password" name="password" style="display: none;">\n';
 		content += '</form>\n';
+		content += '</div>\n';
 		
 		// create filereading progess div
 		content += '<div id="read_progress_div" style="display: none;">\n'
