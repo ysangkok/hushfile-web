@@ -392,7 +392,7 @@ function handlerequest() {
 		content += '</div>\n';
 		
 		// create upload form
-		content += '<div class="offset4 span1" id="uploadbuttondiv">\n';
+		content += '<div style="text-align: center;" id="uploadbuttondiv">\n';
 		content += '<form class="form-horizontal">\n';
 		content += '<div class="fileupload fileupload-new" data-provides="fileupload">\n';
 		content += '<span class="btn btn-file"><span class="fileupload-new"><i style="color: green;" class="icon-upload icon-4x"></i></span><input type="file" id="files"></span>\n';
@@ -400,6 +400,7 @@ function handlerequest() {
 		content += '</div>\n';
 		content += '<input class="input-large" type="text" id="password" name="password" style="display: none;">\n';
 		content += '</form>\n';
+		content += '<p style="margin-top: -1.2em;"><h4>Select file</h4></p>\n';
 		content += '</div>\n';
 		
 		// create filereading progess div
