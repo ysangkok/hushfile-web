@@ -62,13 +62,21 @@ function showPage(url,key) {
 	xhr.open('GET', '/'+url, true);
 	xhr.onload = function(e) {
 		if (this.status == 200) {
+			// display page content
 			setContent(xhr.responseText,key);
+			
+			// some logic is put here to make sure the page is done 
+			// loading before the functions are called
 			if(url == 'upload.html') {
 				// create random password
 				document.getElementById('password').value=randomPassword(40);
 
 				//wait for a file to be selected
 				document.getElementById('files').addEventListener('change', handleFileSelect, false);
+			}
+			if(key == 'download') {
+				// get metadata
+				getmetadata(fileid);
 			}
 		} else {
 			alert("Unable to get content, check client config!");

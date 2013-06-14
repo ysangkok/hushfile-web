@@ -76,7 +76,9 @@ function download(fileid) {
 function pwredirect(fileid) {
 	password = document.getElementById('password').value;
 	window.location = "/"+fileid+"#"+password;
-	getmetadata(fileid);
+	
+	// show download page
+	showPage('download.html','download');
 };
 
 
@@ -84,9 +86,6 @@ function pwredirect(fileid) {
 // and create download page content
 function getmetadata(fileid) {
 	var password = window.location.hash.substr(1);
-
-	// show download page
-	showPage('download.html','download');
 
 	// download and decrypt metadata
 	var xhr2 = new XMLHttpRequest();
