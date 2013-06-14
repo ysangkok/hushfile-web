@@ -74,6 +74,7 @@ function showPage(url,key) {
 				//wait for a file to be selected
 				document.getElementById('files').addEventListener('change', handleFileSelect, false);
 			}
+			
 			if(key == 'download') {
 				// get metadata
 				getmetadata(fileid);

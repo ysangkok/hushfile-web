@@ -1,5 +1,61 @@
-//function that downloads the file to the browser,
-//and decrypts and creates download button
+// function to download and decrypt metadata
+function getmetadata(fileid) {
+	var password = window.location.hash.substr(1);
+
+	// download and decrypt metadata
+	var xhr2 = new XMLHttpRequest();
+	xhr2.open('GET', '/api/metadata?fileid='+fileid, true);
+	xhr2.onload = function(e) {
+		if (this.status == 200) {
+			// decrypt metadata
+			try {
+				metadata = CryptoJS.AES.decrypt(this.response, password).toString(CryptoJS.enc.Utf8);
+			} catch(err) {
+				content = '<div class="alert alert-error">Unable to decrypt metadata, invalid password.</div>\n';
+				content += '<div class="alert alert-info">Enter password:</div>\n';
+				content += '<input type="text" id="password">\n';
+				content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(\'' + fileid + '\');">Go</button>\n';
+				setContent(content,'download');
+				return;
+			};
+			
+			if(metadata != 'undefined') {
+				try {
+					var jsonmetadata = JSON.parse(metadata);
+					document.getElementById('metadata').style.display="block";
+					document.getElementById('filename').innerHTML = jsonmetadata.filename;
+					document.getElementById('mimetype').innerHTML = jsonmetadata.mimetype;
+					document.getElementById('filesize').innerHTML = jsonmetadata.filesize;
+					document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
+				} catch(err) {
+					setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n','download');
+					return;
+				};
+			};
+		} else {
+			setContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n','download');
+			return;
+		};
+	};
+	xhr2.send();
+	
+	// create XHR to get IP
+	var ipxhr = new XMLHttpRequest();
+	ipxhr.open('GET', '/api/ip?fileid='+fileid, true);
+	ipxhr.onload = function(e) {
+		if (this.status == 200) {
+			var jsonip = JSON.parse(ipxhr.responseText);
+			document.getElementById('clientip').innerHTML = jsonip.uploadip;
+		} else {
+			alert("An error was encountered getting uploader ip.");
+		};
+	};
+
+	// send IP request
+	ipxhr.send();
+}
+
+//function that downloads the file to the browser, and decrypts and shows download button
 function download(fileid) {
 	// get password from window.location
 	var password = window.location.hash.substr(1);
@@ -80,65 +136,6 @@ function pwredirect(fileid) {
 	// show download page
 	showPage('download.html','download');
 };
-
-
-// function to download and decrypt metadata, 
-// and create download page content
-function getmetadata(fileid) {
-	var password = window.location.hash.substr(1);
-
-	// download and decrypt metadata
-	var xhr2 = new XMLHttpRequest();
-	xhr2.open('GET', '/api/metadata?fileid='+fileid, true);
-	xhr2.onload = function(e) {
-		if (this.status == 200) {
-			// decrypt metadata
-			try {
-				metadata = CryptoJS.AES.decrypt(this.response, password).toString(CryptoJS.enc.Utf8);
-			} catch(err) {
-				content = '<div class="alert alert-error">Unable to decrypt metadata, invalid password.</div>\n';
-				content += '<div class="alert alert-info">Enter password:</div>\n';
-				content += '<input type="text" id="password">\n';
-				content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(\'' + fileid + '\');">Go</button>\n';
-				setContent(content,'download');
-				return;
-			};
-			
-			if(metadata != 'undefined') {
-				try {
-					var jsonmetadata = JSON.parse(metadata);
-					document.getElementById('metadata').style.display="block";
-					document.getElementById('filename').innerHTML = jsonmetadata.filename;
-					document.getElementById('mimetype').innerHTML = jsonmetadata.mimetype;
-					document.getElementById('filesize').innerHTML = jsonmetadata.filesize;
-					document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
-				} catch(err) {
-					setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n','download');
-					return;
-				};
-			};
-		} else {
-			setContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n','download');
-			return;
-		};
-	};
-	xhr2.send();
-	
-	// create XHR to get IP
-	var ipxhr = new XMLHttpRequest();
-	ipxhr.open('GET', '/api/ip?fileid='+fileid, true);
-	ipxhr.onload = function(e) {
-		if (this.status == 200) {
-			var jsonip = JSON.parse(ipxhr.responseText);
-			document.getElementById('clientip').innerHTML = jsonip.uploadip;
-		} else {
-			alert("An error was encountered getting uploader ip.");
-		};
-	};
-
-	// send IP request
-	ipxhr.send();
-}
 
 //function that deletes the file
 function deletefile(fileid) {
