@@ -23,17 +23,16 @@ function pwredirect(fileid) {
 	getmetadata(fileid);
 };
 
-
 // return a random password of the given length
-function randomPassword(length) {
-	chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-	pass = "";
-	for(x=0;x<length;x++) {
-		i = Math.floor(Math.random() * 62);
-		pass += chars.charAt(i);
-	}
+function randomPassword(length){
+	var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_-";
+	var pass="";
+	var randomBuf = new Uint8Array(length);
+	window.crypto.getRandomValues(randomBuf);
+	for(var i=0;i<length;i++)
+	pass += chars.charAt(Math.floor(randomBuf[i]/4));
 	return pass;
-};
+}
 
 // progress function for filereader on upload page
 function updateProgress(evt) {
