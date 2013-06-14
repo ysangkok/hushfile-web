@@ -393,7 +393,7 @@ function handlerequest() {
 		// create upload form
 		content += '<form class="form-horizontal">\n';		
 		content += '<div class="fileupload fileupload-new" data-provides="fileupload">\n';
-		content += '<span class="btn btn-file"><span class="fileupload-new">Select file</span><input type="file" id="files"></span>\n';
+		content += '<span class="btn btn-file"><span class="fileupload-new"><i class="icon-upload icon-4x"></i></span><input type="file" id="files"></span>\n';
 		content += '<span class="fileupload-preview"></span>\n';
 		content += '</div>\n';
 		content += '<input class="input-large" type="text" id="password" name="password" style="display: none;">\n';
