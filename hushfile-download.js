@@ -167,3 +167,9 @@ function deletefile(fileid) {
 	
 	xhr.send();
 }
+
+function deleteconfirm(result) {
+	if (result === true) {
+		deletefile(window.location.pathname.substr(1));
+	}
+}
