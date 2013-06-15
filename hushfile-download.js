@@ -107,8 +107,8 @@ function download(fileid) {
 				a.href = window.URL.createObjectURL(fileblob);
 				a.download = document.getElementById('filename').innerHTML;
 				a.appendChild(img);
-				document.getElementById('imagepreview').appendChild(a);
-				document.getElementById('imagediv').style.display="block";
+				document.getElementById('filepreview').appendChild(a);
+				document.getElementById('previewdiv').style.display="block";
 			};
 
 		} else {

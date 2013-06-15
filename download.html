@@ -19,6 +19,9 @@
     <!-- download and delete buttons -->
     <button class="btn btn-large btn-primary btn-success" id="downloadbtn" type="button" onclick="download(window.location.pathname.substr(1));"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>
     <button class="btn btn-large btn-primary btn-danger" id="delete" type="button" onclick="bootbox.confirm('Really delete file ?', function(result) { deleteconfirm(result) });"><i class="icon-trash icon-large"></i> Delete file</button>
+    <div class="switch" data-on="success" data-off="danger" data-on-label="Preview enabled" data-off-label="Preview disabled">
+        <input id="previewcheck" type="checkbox" checked />
+    </div>
 </div>
 
 
@@ -30,14 +33,17 @@
     </div>
 </div>
 
+
 <!-- create decrypting div -->
 <div id="decrypting" style="display: none;">
     <p><i id="decryptingdone" class="icon-spinner icon-spin"></i> <b>Decrypting...</b></p>
 </div>
 
+
 <!-- create user download div -->
 <div id="downloaddiv" style="display: none;"></div>
-	
+
+
 <!-- create deleting div -->
 <div id="deleting" style="display: none;">
     <p><i id="deletingdone" class="icon-spinner icon-spin"></i> <b>Deleting...</b></p>
@@ -46,9 +52,9 @@
 <!-- create deleteresponse div -->
 <div id="deleteresponse" style="display: none;"></div>
 	
-<!-- create image preview div -->
-<div id="imagediv" style="display: none;">
-    <h3>Image preview</h3>
-    <div class="offset1 span6" id="imagepreview">
+<!-- create preview div -->
+<div id="previewdiv" style="display: none;">
+    <h3>File preview</h3>
+    <div class="span8" id="filepreview">
     </div>
 </div>
