@@ -66,6 +66,9 @@
             $(document).ready(function() {
                 // activate dismiss/close function of any bootstrap alert boxes
                 $(".alert").alert();
+                
+                //activate bootstrapswitch button, with delay as it doesn't work otherwise
+                 setTimeout("$('.switch')['bootstrapSwitch']()",300);
             });
         </script>
     </body>
