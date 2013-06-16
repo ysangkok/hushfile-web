@@ -1,5 +1,5 @@
 // function to download and decrypt metadata
-function getmetadata(fileid) {
+function hfGetMetadata(fileid) {
 	var password = window.location.hash.substr(1);
 
 	// download and decrypt metadata
@@ -14,8 +14,8 @@ function getmetadata(fileid) {
 				content = '<div class="alert alert-error">Unable to decrypt metadata, invalid password.</div>\n';
 				content += '<div class="alert alert-info">Enter password:</div>\n';
 				content += '<input type="text" id="password">\n';
-				content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(\'' + fileid + '\');">Go</button>\n';
-				setContent(content,'download');
+				content += '<button type="button" class="btn btn-large btn-success" onclick="hfPwRedirect(\'' + fileid + '\');">Go</button>\n';
+				hfSetContent(content,'download');
 				return;
 			};
 			
@@ -28,12 +28,12 @@ function getmetadata(fileid) {
 					document.getElementById('filesize').innerHTML = jsonmetadata.filesize;
 					document.getElementById('deletepassword').innerHTML = jsonmetadata.deletepassword;
 				} catch(err) {
-					setContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n','download');
+					hfSetContent('<div class="alert alert-error">Unable to parse metadata, sorry.</div>\n','download');
 					return;
 				};
 			};
 		} else {
-			setContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n','download');
+			hfSetContent('<div class="alert alert-error">Unable to download metadata, sorry.</div>\n','download');
 			return;
 		};
 	};
@@ -56,7 +56,7 @@ function getmetadata(fileid) {
 }
 
 //function that downloads the file to the browser, and decrypts and shows download button
-function download(fileid) {
+function hfDownload(fileid) {
 	// get password from window.location
 	var password = window.location.hash.substr(1);
 	// disable the download button
@@ -110,7 +110,6 @@ function download(fileid) {
 				document.getElementById('filepreview').appendChild(a);
 				document.getElementById('previewdiv').style.display="block";
 			};
-
 		} else {
 			alert("An error was encountered downloading filedata.");
 		};
@@ -129,16 +128,15 @@ function download(fileid) {
 };
 
 // function to redirect the browser after a new password has been entered
-function pwredirect(fileid) {
+function hfPwRedirect(fileid) {
 	password = document.getElementById('password').value;
 	window.location = "/"+fileid+"#"+password;
-	
 	// show download page
-	showPage('download.html','download');
+	hfShowPage('download.html','download');
 };
 
 //function that deletes the file
-function deletefile(fileid) {
+function hfDeleteFile(fileid) {
 	// disable the delete button
 	document.getElementById('delete').className="btn btn-large btn-primary btn-success disabled";
 	document.getElementById('deleting').style.display="block";
@@ -168,8 +166,8 @@ function deletefile(fileid) {
 	xhr.send();
 }
 
-function deleteconfirm(result) {
+function hfDeleteConfirm(result) {
 	if (result === true) {
-		deletefile(window.location.pathname.substr(1));
+		hfDeleteFile(window.location.pathname.substr(1));
 	}
 }

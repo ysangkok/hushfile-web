@@ -49,10 +49,10 @@ xhr.onload = function(e) {
 			}
 		}
 		// configuration OK, handle request
-		handlerequest();
+		hfhandlerequest();
 	} else {
 		// unable to get config, use defaults
-		handlerequest();
+		hfhandlerequest();
 	};
 };
 

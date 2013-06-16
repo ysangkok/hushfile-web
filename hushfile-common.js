@@ -1,8 +1,8 @@
 // main function to handle requests
-function handlerequest() {
+function hfhandlerequest() {
 	if(window.location.pathname == "/") {
 		// show upload page
-		showPage('upload.html','upload');
+		hfShowPage('upload.html','upload');
 	} else {
 		// this is not a request for a known url, get fileid and password
 		var fileid = window.location.pathname.substr(1);
@@ -18,20 +18,20 @@ function handlerequest() {
 					if(window.location.hash.substr(1)=="") {
 						content = '<div class="alert alert-info">Enter password:</div>\n';
 						content += '<input type="text" id="password">\n';
-						content += '<button type="button" class="btn btn-large btn-success" onclick="pwredirect(\'' + fileid + '\');">Go</button>\n';
-						setContent(content,'download');
+						content += '<button type="button" class="btn btn-large btn-success" onclick="hfPwRedirect(\'' + fileid + '\');">Go</button>\n';
+						hfSetContent(content,'download');
 					} else {
 						// show download page
-						showPage('download.html','download');
+						hfShowPage('download.html','download');
 					};
 				} else {
 					// fileid does not exist
-					setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','download');
+					hfSetContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','download');
 					return;
 				};
 			} else if (this.status == 404) {
 				//fileid does not exist
-				setContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','download');
+				hfSetContent('<div class="alert alert-error">Invalid fileid. Expired ?</div>\n','download');
 			};
 		};
 		
@@ -41,7 +41,7 @@ function handlerequest() {
 };
 
 // function to set page content
-function setContent(content,menuitem) {
+function hfSetContent(content,menuitem) {
 	// set main page content
 	document.getElementById('content').innerHTML=content
 	// get all menuitems
@@ -58,28 +58,28 @@ function setContent(content,menuitem) {
 };
 
 // function to show pages from custom menu items
-function showPage(url,key) {
+function hfShowPage(url,key) {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/'+url, true);
 	xhr.onload = function(e) {
 		if (this.status == 200) {
 			// display page content
-			setContent(xhr.responseText,key);
+			hfSetContent(xhr.responseText,key);
 			
 			// some logic is put here to make sure the page is done 
 			// loading before the functions are called
 			if(url == 'upload.html') {
 				// create random password
-				document.getElementById('password').value=randomPassword(40);
+				document.getElementById('password').value=hfRandomPassword(40);
 
 				//wait for a file to be selected
-				document.getElementById('files').addEventListener('change', handleFileSelect, false);
+				document.getElementById('files').addEventListener('change', hfHandleFileSelect, false);
 			}
 			
 			if(key == 'download') {
 				// get metadata
 				var fileid = window.location.pathname.substr(1);
-				getmetadata(fileid);
+				hfGetMetadata(fileid);
 			}
 		} else {
 			alert("Unable to get content, check client config!");

@@ -1,5 +1,5 @@
 // function that handles reading file after it has been selected
-function handleFileSelect(evt) {
+function hfHandleFileSelect(evt) {
 	// show upload page elements
 	document.getElementById('uploadbuttondiv').style.display="none";
 	document.getElementById('read_progress_div').style.display="block";
@@ -10,7 +10,7 @@ function handleFileSelect(evt) {
 	reader = new FileReader();
 	
 	//register event handlers
-	reader.onprogress = updateProgress;
+	reader.onprogress = hfUpdateProgress;
 
 	// runs after file reading completes
 	reader.onload = function(e) {
@@ -23,7 +23,7 @@ function handleFileSelect(evt) {
 		//make the next section visible
 		document.getElementById('encrypting').style.display="block";
 		document.getElementById('encryptingdone').className="icon-spinner icon-spin";
-		setTimeout('encrypt()',1000);
+		setTimeout('hfEncrypt()',1000);
 	};
 
 	// get file info and show it to the user
@@ -46,14 +46,14 @@ function handleFileSelect(evt) {
 
 // function that encrypts the file,
 // and creates and encrypts metadata
-function encrypt() {
+function hfEncrypt() {
 	//encrypt the data
 	ui8a = new Uint8Array(reader.result);
 	wordarray = CryptoJS.enc.u8array.parse(ui8a);
 	cryptoobject = CryptoJS.AES.encrypt(wordarray, document.getElementById('password').value);
 
 	//generate deletepassword
-	deletepassword = randomPassword(40);
+	deletepassword = hfRandomPassword(40);
 	
 	//encrypt the metadata
 	metadatajson = '{"filename": "'+filename+'", "mimetype": "'+mimetype+'", "filesize": "'+filesize+'", "deletepassword": "' + deletepassword + '"}'
@@ -67,11 +67,11 @@ function encrypt() {
 	document.getElementById('uploading').style.display="block";
 	document.getElementById('uploaddone').className="icon-spinner icon-spin";
 
-	setTimeout('upload(cryptoobject,metadataobject,deletepassword)',1000);
+	setTimeout('hfUpload(cryptoobject,metadataobject,deletepassword)',1000);
 }
 
 // function that uploads the data to the server
-function upload(cryptoobject,metadataobject,deletepassword) {
+function hfUpload(cryptoobject,metadataobject,deletepassword) {
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', '/api/upload', true);
 	xhr.onload = function(e) {
@@ -112,7 +112,7 @@ function upload(cryptoobject,metadataobject,deletepassword) {
 };
 
 // return a random password of the given length
-function randomPassword(length){
+function hfRandomPassword(length){
 	var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_-";
 	var pass="";
 	var randomBuf = new Uint8Array(length);
@@ -123,7 +123,7 @@ function randomPassword(length){
 }
 
 // progress function for filereader on upload page
-function updateProgress(evt) {
+function hfUpdateProgress(evt) {
 	// evt is an ProgressEvent.
 	if (evt.lengthComputable) {
 		var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
