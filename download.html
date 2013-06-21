@@ -19,9 +19,12 @@
     <!-- download and delete buttons -->
     <button class="btn btn-large btn-primary btn-success" id="downloadbtn" type="button" onclick="hfDownload(window.location.pathname.substr(1));"><i class="icon-cloud-download icon-large"></i> Get and decrypt</button>
     <button class="btn btn-large btn-primary btn-danger pull-right" id="delete" type="button" onclick="bootbox.confirm('Really delete file ?', function(result) { hfDeleteConfirm(result) });"><i class="icon-trash icon-large"></i> Delete file</button>
+
+    <!-- preview button disabled for now
     <div class="switch" data-on="success" data-off="danger" data-on-label="Preview enabled" data-off-label="Preview disabled">
         <input id="previewcheck" type="checkbox" style="display: none" checked>
     </div>
+    -->
 </div>
 
 
