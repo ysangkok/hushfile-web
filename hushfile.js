@@ -41,7 +41,7 @@ xhr.onload = function(e) {
 				li.id = key;
 				li.className = "menuitem";
 				a = document.createElement("a");
-				a.href="javascript:showPage('" + obj[key] + "','" + key + "');";
+				a.href="javascript:hfShowPage('" + obj[key] + "','" + key + "');";
 				linkText = document.createTextNode(key);
 				a.appendChild(linkText);
 				li.appendChild(a);
