@@ -60,7 +60,7 @@ function hfSetContent(content,menuitem) {
 // function to show pages from custom menu items
 function hfShowPage(url,key) {
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', '/'+url, true);
+	xhr.open('GET', '/static/' + url, true);
 	xhr.onload = function(e) {
 		if (this.status == 200) {
 			// display page content

@@ -60,7 +60,7 @@ function hfDownload(fileid) {
 	// get password from window.location
 	var password = window.location.hash.substr(1);
 	// disable the download button
-	document.getElementById('downloadbtn').className="btn btn-large btn-primary btn-success disabled";
+	document.getElementById('downloadbtn').className += " disabled";
 	// make download progress bar div visible
 	document.getElementById('downloading').style.display="block";
 	var xhr = new XMLHttpRequest();
@@ -138,10 +138,10 @@ function hfPwRedirect(fileid) {
 //function that deletes the file
 function hfDeleteFile(fileid) {
 	// disable the delete button
-	document.getElementById('delete').className="btn btn-large btn-primary btn-success disabled";
+	document.getElementById('delete').className += " disabled";
 	document.getElementById('deleting').style.display="block";
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', '/api/delete?fileid='+fileid+'&deletepassword='+document.getElementById('deletepassword').innerHTML, true);
+	xhr.open('POST', '/api/delete?fileid='+fileid+'&deletepassword='+document.getElementById('deletepassword').innerHTML, true);
 
 	xhr.onload = function(e) {
 		document.getElementById('deleteresponse').style.display="block";

@@ -1,6 +1,6 @@
 // load and apply config
 var xhr = new XMLHttpRequest();
-xhr.open('GET', '/hushfile-config.json', true);
+xhr.open('GET', '/static/hushfile-config.json', true);
 xhr.onload = function(e) {
 	if (this.status == 200) {
 		var config = JSON.parse(xhr.responseText);
@@ -15,7 +15,7 @@ xhr.onload = function(e) {
 			} else {
 				// get and show custom footer
 				footerxhr = new XMLHttpRequest();
-				footerxhr.open('GET', '/'+config.footer.footer, true);
+				footerxhr.open('GET', '/static/' + config.footer.footer, true);
 				footerxhr.onload = function(e) {
 					if (this.status == 200) {
 						// footer fetched OK, replace default footer
