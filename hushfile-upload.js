@@ -86,7 +86,7 @@ function hfUpload(cryptoobject,metadataobject,deletepassword) {
 				document.getElementById('uploading').style.color='green';
 				document.getElementById('response').style.display="block";
 				//get current URL
-				url = window.location.protocol + '://' + window.location.host + '/';
+				url = window.location.protocol + '//' + window.location.host + '/';
 				document.getElementById('response').innerHTML = '<p><i class="icon-check"></i> <b><span style="color: green;">Success! Your URL is:</span></b><br> <a class="btn btn-success" href="/'+responseobject.fileid+'#'+document.getElementById('password').value+'">'+url+responseobject.fileid+'#'+document.getElementById('password').value+'</a>';
 			} else {
 				document.getElementById('response').innerHTML = 'Something went wrong. Sorry about that. <a href="/">Try again.</a>';
