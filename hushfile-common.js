@@ -1,11 +1,11 @@
 // main function to handle requests
 function hfhandlerequest() {
-	if(window.location.pathname == "/") {
+	if(window.location.search == "") {
 		// show upload page
 		hfShowPage('upload.html','upload');
 	} else {
 		// this is not a request for a known url, get fileid and password
-		var fileid = window.location.pathname.substr(1);
+		var fileid = window.location.search.substr(3);
 		
 		// check if fileid exists
 		var xhr = new XMLHttpRequest();
@@ -78,7 +78,7 @@ function hfShowPage(url,key) {
 			
 			if(key == 'download') {
 				// get metadata
-				var fileid = window.location.pathname.substr(1);
+				var fileid = window.location.search.substr(3);
 				hfGetMetadata(fileid);
 			}
 		} else {

@@ -130,7 +130,7 @@ function hfDownload(fileid) {
 // function to redirect the browser after a new password has been entered
 function hfPwRedirect(fileid) {
 	password = document.getElementById('password').value;
-	window.location = "/"+fileid+"#"+password;
+	window.location = "/?f="+fileid+"#"+password;
 	// show download page
 	hfShowPage('download.html','download');
 };
@@ -168,6 +168,6 @@ function hfDeleteFile(fileid) {
 
 function hfDeleteConfirm(result) {
 	if (result === true) {
-		hfDeleteFile(window.location.pathname.substr(1));
+		hfDeleteFile(window.location.search.substr(3));
 	}
 }
